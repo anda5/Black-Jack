@@ -31,7 +31,7 @@ namespace AdvanedServer
             }
             else
             {
-                textBox1.Text = txt + "\r\n";
+                textBox1.Text = txt +  "\r\n";
             }
         }
         public void ChangeListBox(ListBox box, string txt, bool remove)
@@ -76,7 +76,7 @@ namespace AdvanedServer
 
         private void server_OnClientDisconected(object Sender, DisconnectedArguments R)
         {
-            server.BroadCast(R.Name + " has disconnected");
+            server.BroadCast(R.Name + "  has disconnected");
             ChangeListBox(listBox1, R.Name, true);
             ChangeListBox(listBox2, R.Ip, true);
         }
