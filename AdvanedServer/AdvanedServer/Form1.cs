@@ -76,7 +76,7 @@ namespace AdvanedServer
 
         private void server_OnClientDisconected(object Sender, DisconnectedArguments R)
         {
-            server.BroadCast(R.Name + "has disconnected");
+            server.BroadCast(R.Name + " has disconnected");
             ChangeListBox(listBox1, R.Name, true);
             ChangeListBox(listBox2, R.Ip, true);
         }
@@ -84,18 +84,20 @@ namespace AdvanedServer
         private void server_OnServerError(object Sender, ErrorArguments R)
         {
             MessageBox.Show(R.ErrorMessage);
+
+
         }
 
         private void server_OnRecived(object Sender, ReceivedArguments R)
         {
             ChangeChat(R.ReceivedData);
-            server.BroadCast(R.Name + "says:" + R.ReceivedData);
+            server.BroadCast(R.Name + " says: " + R.ReceivedData);
 
         }
 
         private void server_OnClientConected(object Sender, ConnectedArguments R)
         {
-            server.BroadCast(R.Name + "has connected");
+            server.BroadCast(R.Name + " has connected");
             ChangeListBox(listBox1, R.Name,false);
             ChangeListBox(listBox2, R.Ip, false);
         }
