@@ -126,5 +126,10 @@ namespace AdvancedClient
         {
 
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            System.Environment.Exit(System.Environment.ExitCode);
+        }
     }
 }
