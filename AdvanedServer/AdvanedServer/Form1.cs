@@ -31,7 +31,7 @@ namespace AdvanedServer
             }
             else
             {
-                textBox1.Text = txt +  "\r\n";
+                textBox1.Text += txt +  "\r\n";
             }
         }
         public void ChangeListBox(ListBox box, string txt, bool remove)
@@ -66,7 +66,7 @@ namespace AdvanedServer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            server = new Server("192.168.0.102", "80");
+            server = new Server("192.168.0.103", "80");
             server.OnClientConnected += new OnConnectedDelegate(server_OnClientConected);
             server.OnClientDisconnected += new OnDisconnectedDelegate(server_OnClientDisconected);
             server.OnDataReceived += new OnReceivedDelegate(server_OnRecived);
@@ -90,8 +90,9 @@ namespace AdvanedServer
 
         private void server_OnRecived(object Sender, ReceivedArguments R)
         {
-            ChangeChat(R.ReceivedData);
+            ChangeChat(R.Name+" : "+R.ReceivedData);
             server.BroadCast(R.Name + " says: " + R.ReceivedData);
+            server.SendTo(R.Name, R.ReceivedData);
 
         }
 
@@ -115,6 +116,7 @@ namespace AdvanedServer
         private void button1_Click(object sender, EventArgs e)
         {
             server.SendTo((string)listBox1.SelectedItem, textBox2.Text);
+           
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -125,6 +127,11 @@ namespace AdvanedServer
         private void button3_Click(object sender, EventArgs e)
         {
             server.DisconnectClient((string)listBox1.SelectedItem);
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
 
