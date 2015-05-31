@@ -16,6 +16,7 @@ namespace AdvanedServer
     public partial class Form1 : Form
     {
         Server server;
+        String player1, player2,msg;
 
         public Form1()
         {
@@ -32,6 +33,7 @@ namespace AdvanedServer
             else
             {
                 textBox1.Text += txt +  "\r\n";
+                
             }
         }
         public void ChangeListBox(ListBox box, string txt, bool remove)
@@ -66,7 +68,7 @@ namespace AdvanedServer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            server = new Server("192.168.0.103", "80");
+            server = new Server("192.168.0.100", "80");
             server.OnClientConnected += new OnConnectedDelegate(server_OnClientConected);
             server.OnClientDisconnected += new OnDisconnectedDelegate(server_OnClientDisconected);
             server.OnDataReceived += new OnReceivedDelegate(server_OnRecived);
@@ -90,10 +92,65 @@ namespace AdvanedServer
 
         private void server_OnRecived(object Sender, ReceivedArguments R)
         {
-            ChangeChat(R.Name+" : "+R.ReceivedData);
-            server.BroadCast(R.Name + " says: " + R.ReceivedData);
-            server.SendTo(R.Name, R.ReceivedData);
 
+            msg = R.ReceivedData;
+
+            if (msg.StartsWith("#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
+            else if (msg.StartsWith("$#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
+
+            else if (msg.StartsWith("!#"))
+                {
+                    if (R.Name == player1)
+                    {
+                        server.SendTo(player2, R.ReceivedData);
+                    }
+                    if (R.Name == player2)
+                    {
+                        server.SendTo(player1, R.ReceivedData);
+                    }
+                }
+            else if (msg.StartsWith("@#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
+                else
+                {
+
+                    ChangeChat(R.Name + " : " + R.ReceivedData);
+                    server.BroadCast(R.Name + " says: " + R.ReceivedData);
+                    server.SendTo(R.Name, R.ReceivedData);
+
+                }
+
+
+            
         }
 
         private void server_OnClientConected(object Sender, ConnectedArguments R)
@@ -101,6 +158,9 @@ namespace AdvanedServer
             server.BroadCast(R.Name + " has connected");
             ChangeListBox(listBox1, R.Name,false);
             ChangeListBox(listBox2, R.Ip, false);
+
+            player1 = R.ListOfClients.First();
+            player2 = R.ListOfClients.Last();
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
