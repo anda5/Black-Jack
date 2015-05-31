@@ -15,9 +15,7 @@ namespace AdvancedClient
 
             switch (number)
             {
-                case 1: img = AdvancedClient.Properties.Resources.h11;
-                    return img;
-                    break;
+                
                 case 2: img = AdvancedClient.Properties.Resources.h2;
                     return img;
                     break;
@@ -48,6 +46,17 @@ namespace AdvancedClient
                 case 11: img = AdvancedClient.Properties.Resources.h11;
                     return img;
                     break;
+                case 12: img = AdvancedClient.Properties.Resources.h12;
+                    return img;
+                    break;
+                case 13: img = AdvancedClient.Properties.Resources.h13;
+                    return img;
+                    break;
+                case 14: img = AdvancedClient.Properties.Resources.h14;
+                    return img;
+                    break;
+               
+                    
 
             }
             return null;

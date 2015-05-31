@@ -48,6 +48,15 @@ namespace AdvancedClient
                 case 11: img = AdvancedClient.Properties.Resources.s11;
                     return img;
                     break;
+                case 12: img = AdvancedClient.Properties.Resources.s12;
+                    return img;
+                    break;
+                case 13: img = AdvancedClient.Properties.Resources.s13;
+                    return img;
+                    break;
+                case 14: img = AdvancedClient.Properties.Resources.s14;
+                    return img;
+                    break;
 
             }
             return null;
