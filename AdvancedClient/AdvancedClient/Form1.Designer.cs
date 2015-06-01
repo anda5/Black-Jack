@@ -58,6 +58,12 @@
             this.pictureBox11 = new System.Windows.Forms.PictureBox();
             this.pictureBox12 = new System.Windows.Forms.PictureBox();
             this.pictureBox13 = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
@@ -306,7 +312,7 @@
             // pictureBox10
             // 
             this.pictureBox10.Image = global::AdvancedClient.Properties.Resources.cardbg;
-            this.pictureBox10.Location = new System.Drawing.Point(575, 40);
+            this.pictureBox10.Location = new System.Drawing.Point(738, 51);
             this.pictureBox10.Name = "pictureBox10";
             this.pictureBox10.Size = new System.Drawing.Size(39, 58);
             this.pictureBox10.TabIndex = 29;
@@ -315,7 +321,7 @@
             // pictureBox11
             // 
             this.pictureBox11.Image = global::AdvancedClient.Properties.Resources.cardbg;
-            this.pictureBox11.Location = new System.Drawing.Point(608, 40);
+            this.pictureBox11.Location = new System.Drawing.Point(766, 51);
             this.pictureBox11.Name = "pictureBox11";
             this.pictureBox11.Size = new System.Drawing.Size(39, 58);
             this.pictureBox11.TabIndex = 30;
@@ -324,7 +330,7 @@
             // pictureBox12
             // 
             this.pictureBox12.Image = global::AdvancedClient.Properties.Resources.cardbg;
-            this.pictureBox12.Location = new System.Drawing.Point(640, 40);
+            this.pictureBox12.Location = new System.Drawing.Point(800, 51);
             this.pictureBox12.Name = "pictureBox12";
             this.pictureBox12.Size = new System.Drawing.Size(39, 58);
             this.pictureBox12.TabIndex = 31;
@@ -333,17 +339,89 @@
             // pictureBox13
             // 
             this.pictureBox13.Image = global::AdvancedClient.Properties.Resources.cardbg;
-            this.pictureBox13.Location = new System.Drawing.Point(666, 40);
+            this.pictureBox13.Location = new System.Drawing.Point(828, 51);
             this.pictureBox13.Name = "pictureBox13";
             this.pictureBox13.Size = new System.Drawing.Size(45, 58);
             this.pictureBox13.TabIndex = 32;
             this.pictureBox13.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.SeaGreen;
+            this.label5.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(388, 190);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(36, 23);
+            this.label5.TabIndex = 33;
+            this.label5.Text = "You";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.SeaGreen;
+            this.label6.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(762, 190);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(118, 23);
+            this.label6.TabIndex = 34;
+            this.label6.Text = "Your opponent";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.SeaGreen;
+            this.label7.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(741, 112);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(61, 23);
+            this.label7.TabIndex = 35;
+            this.label7.Text = "Dealer";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.label8.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(497, 190);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(20, 23);
+            this.label8.TabIndex = 36;
+            this.label8.Text = "0";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.label9.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(880, 190);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(20, 23);
+            this.label9.TabIndex = 37;
+            this.label9.Text = "0";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.label10.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(849, 112);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(20, 23);
+            this.label10.TabIndex = 38;
+            this.label10.Text = "0";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1018, 483);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.pictureBox13);
             this.Controls.Add(this.pictureBox12);
             this.Controls.Add(this.pictureBox11);
@@ -426,6 +504,12 @@
         private System.Windows.Forms.PictureBox pictureBox11;
         private System.Windows.Forms.PictureBox pictureBox12;
         private System.Windows.Forms.PictureBox pictureBox13;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
     }
 }
 
