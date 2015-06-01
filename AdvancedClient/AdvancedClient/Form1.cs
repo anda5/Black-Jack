@@ -27,12 +27,15 @@ namespace AdvancedClient
 
         Player player1 = new Player();
         Player player2 = new Player();
-        Player dealer = new Player();
+        Dealer dealer = new Dealer();
         Random random = new Random();
         Random random1 = new Random();
         Random random2 = new Random();
         Random random3 = new Random();
+        int score;
+        String gi, txt;
         Image img, img1;
+        Image deal1, deal2, deal3;
      
 
         int card1;
@@ -60,7 +63,20 @@ namespace AdvancedClient
                 
             }
         }
-        
+
+        public void ChageLabel(string txt)
+        {
+            if (textBox3.InvokeRequired)
+            {
+                Invoke(new Update(ChageLabel), new object[] { txt });
+            }
+            else
+            {
+                String[] m = txt.Split('s');
+                label9.Text = m[1];
+
+            }
+        }
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -363,6 +379,7 @@ namespace AdvancedClient
                                     Shape.card sh = Shape.card.HEART;
                                     Image imge1 = cardfact.getShape(sh).draw(card);
                                     pictureBox10.Image = imge1;
+                                   
                                 }
 
                                 else if (cardShape == "diamonds")
@@ -373,6 +390,7 @@ namespace AdvancedClient
                                     Shape.card sh = Shape.card.DIAMONDS;
                                     Image imge1 = cardfact.getShape(sh).draw(card);
                                     pictureBox10.Image = imge1;
+                             
 
                                 }
                                 else if (cardShape == "clubs")
@@ -383,6 +401,7 @@ namespace AdvancedClient
                                     Shape.card sh = Shape.card.CLUBS;
                                     Image imge1 = cardfact.getShape(sh).draw(card);
                                     pictureBox10.Image = imge1;
+                                   
 
 
                                 }
@@ -394,12 +413,17 @@ namespace AdvancedClient
                                     Shape.card sh = Shape.card.SPADES;
                                     Image imge1 = cardfact.getShape(sh).draw(card);
                                     pictureBox10.Image = imge1;
+                                   
 
                                 }
                             }
                         }
-                    
-                }
+
+                    } if (mesaj.StartsWith("s"))
+                    {
+                        ChageLabel(R.ReceivedData);
+
+                    }
                 else
                 {
                     ChageTextBox(R.ReceivedData);
@@ -543,77 +567,8 @@ namespace AdvancedClient
         int test2 = 0;
         private void Start_Click(object sender, EventArgs e)
         {
-            
-             
 
-            dealer.setCArd(random1.Next(2, 14));
-            int cardDealer = player1.getCard();
-            String gi = Convert.ToString(cardDealer);
-            Shape shape2 = new Shape();
-            Random randomm = new Random();
-            Card card9;
-            String txt;
-            int n = randomm.Next(1, 4);
-            if (n == 1)
-            {
-                CardFactory cardfact = new CardFactory();
-                Shape.card sh = Shape.card.SPADES;
-                Image imge1 = cardfact.getShape(sh).draw(cardDealer);
-                pictureBox10.Image = imge1;
-                txt = "spades";
-                client.Send("d#" + gi + "/" + txt);
-
-            }
-            else if (n == 2)
-            {
-                CardFactory cardfact1 = new CardFactory();
-                Shape.card sh = Shape.card.HEART;
-                txt = cardfact1.getSh();
-                Image imge1 = cardfact1.getShape(sh).draw(cardDealer);
-                pictureBox10.Image = imge1;
-                txt = "heart";
-                client.Send("d#" + gi + "/" + txt);
-
-            }
-            else if (n == 3)
-            {
-                CardFactory cardfact2 = new CardFactory();
-                Shape.card sh = Shape.card.DIAMONDS;
-                txt = cardfact2.getSh();
-                Image imge1 = cardfact2.getShape(sh).draw(cardDealer);
-                pictureBox10.Image = imge1;
-                txt = "diamonds";
-                client.Send("d#" + gi + "/" + txt);
-
-
-            }
-            else if (n == 4)
-            {
-                CardFactory cardfact3 = new CardFactory();
-                Shape.card sh = Shape.card.CLUBS;
-                txt = cardfact3.getSh();
-                Image imge1 = cardfact3.getShape(sh).draw(cardDealer);
-                pictureBox10.Image = imge1;
-                txt = "clubs";
-                client.Send("d#" + gi + "/" + txt);
-
-
-            }
-
-            
-             
-  
-        
-    }
-
-
-
-        int test=-1;
-       
-        private void button4_Click(object sender, EventArgs e)
-        {
-
-            if (test == -1)
+           if (test2 == 0)
             {
                 player1.setCArd(random.Next(2, 14));
                 int card1 = player1.getCard();
@@ -622,7 +577,16 @@ namespace AdvancedClient
                 Random rand = new Random();
                 Card card;
                 String s;
-
+                if (card1 <= 11)
+                {
+                    score += card1;
+                }
+                else if (card1 > 11)
+                {
+                    score += 10;
+                }
+                label8.Text = Convert.ToString(score);
+                client.Send("s" + Convert.ToString(score));
                 int nrrr = rand.Next(1, 4);
                 if (nrrr == 1)
                 {
@@ -676,66 +640,158 @@ namespace AdvancedClient
                     client.Send("#" + get + "/" + s);
                 }
 
-                test++;
+                test2++;
             }
-            else if (test == 0)
-            {
+           else if (test2 == 1)
+           {
 
+               player2.setCArd(random1.Next(2, 14));
+               int card11 = player2.getCard();
+               String g = Convert.ToString(card11);
+               Random rando = new Random();
+               Card cardd;
+               String sf;
+               if (card11 <= 11)
+               {
+                   score += card11;
+               }
+               else if (card11 > 11)
+               {
+                   score += 10;
+               }
+               label8.Text = Convert.ToString(score);
+               client.Send("s" + Convert.ToString(score));
+               int ni = rando.Next(1, 4);
+               if (ni == 1)
+               {
+                   CardFactory cardfact = new CardFactory();
+                   Shape.card sh = Shape.card.SPADES;
+                   Image imge1 = cardfact.getShape(sh).draw(card11);
+                   pictureBox3.Image = imge1;
+                   sf = "spades";
+                   client.Send("$#" + g + "/" + sf);
+
+               }
+               else if (ni == 2)
+               {
+                   CardFactory cardfact1 = new CardFactory();
+                   Shape.card sh = Shape.card.HEART;
+                   Image imge1 = cardfact1.getShape(sh).draw(card11);
+                   pictureBox3.Image = imge1;
+                   sf = "heart";
+                   client.Send("$#" + g + "/" + sf);
+
+               }
+               else if (ni == 3)
+               {
+                   CardFactory cardfact2 = new CardFactory();
+                   Shape.card sh = Shape.card.DIAMONDS;
+                   Image imge1 = cardfact2.getShape(sh).draw(card11);
+                   pictureBox3.Image = imge1;
+                   sf = "diamonds";
+                   client.Send("$#" + g + "/" + sf);
+
+
+               }
+               else if (ni == 4)
+               {
+                   CardFactory cardfact3 = new CardFactory();
+                   Shape.card sh = Shape.card.CLUBS;
+                   Image imge1 = cardfact3.getShape(sh).draw(card11);
+                   pictureBox3.Image = imge1;
+                   sf = "clubs";
+                   client.Send("$#" + g + "/" + sf);
+
+
+               }
+               
+          
+                   pictureBox10.Image = dealer.generateCard();
+                   gi = dealer.getCardNumber();
+                   txt = dealer.getShape();
+                   client.Send("d#" + gi + "/" + txt);
+               }
+           }
+    
+
+            
+
+        int test=0;
+      
+       
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+             if (test == 0)
+            {
                 player1.setCArd(random1.Next(2, 14));
-                int card11 = player1.getCard();
-                String g = Convert.ToString(card11);
+                int card0 = player1.getCard();
+                String g = Convert.ToString(card0);
                 Shape shape1 = new Shape();
-                Random rando = new Random();
-                Card cardd;
-                String sf;
-                int ni = rando.Next(1, 4);
-                if (ni == 1)
+                Random rand = new Random();
+                Card card;
+                String s;
+                if (card0 <= 11)
+                {
+                    score += card0;
+                }
+                else if (card0 > 11)
+                {
+                    score += 10;
+                }
+                label8.Text = Convert.ToString(score);
+                client.Send("s"+Convert.ToString(score));
+                int nr = rand.Next(1, 4);
+                if (nr == 1)
                 {
                     CardFactory cardfact = new CardFactory();
                     Shape.card sh = Shape.card.SPADES;
-                    Image imge1 = cardfact.getShape(sh).draw(card11);
-                    pictureBox3.Image = imge1;
-                    sf = "spades";
-                    client.Send("$#" + g + "/" + sf);
+                    Image imge1 = cardfact.getShape(sh).draw(card0);
+                    pictureBox4.Image = imge1;
+                    s = "spades";
+                    client.Send("!#" + g + "/" + s);
 
                 }
-                else if (ni == 2)
+                else if (nr == 2)
                 {
                     CardFactory cardfact1 = new CardFactory();
                     Shape.card sh = Shape.card.HEART;
-                    Image imge1 = cardfact1.getShape(sh).draw(card11);
-                    pictureBox3.Image = imge1;
-                    sf= "heart";
-                    client.Send("$#" + g + "/" + sf);
+                    
+                    Image imge1 = cardfact1.getShape(sh).draw(card0);
+                    pictureBox4.Image = imge1;
+                    s = "heart";
+                    client.Send("!#" + g + "/" + s);
 
                 }
-                else if (ni == 3)
+                else if (nr == 3)
                 {
                     CardFactory cardfact2 = new CardFactory();
                     Shape.card sh = Shape.card.DIAMONDS;
-                    Image imge1 = cardfact2.getShape(sh).draw(card11);
-                    pictureBox3.Image = imge1;
-                    sf = "diamonds";
-                    client.Send("$#" + g + "/" + sf);
+                
+                    Image imge1 = cardfact2.getShape(sh).draw(card0);
+                    pictureBox4.Image = imge1;
+                    s = "diamonds";
+                    client.Send("!#" + g + "/" + s);
 
 
                 }
-                else if (ni == 4)
+                else if (nr == 4)
                 {
                     CardFactory cardfact3 = new CardFactory();
                     Shape.card sh = Shape.card.CLUBS;
-                    Image imge1 = cardfact3.getShape(sh).draw(card11);
-                    pictureBox3.Image = imge1;
-                    sf = "clubs";
-                    client.Send("$#" + g + "/" + sf);
+
+                    Image imge1 = cardfact3.getShape(sh).draw(card0);
+                    pictureBox4.Image = imge1;
+                    s = "clubs";
+                    client.Send("!#" + g + "/" + s);
 
 
                 }
-            
-                test++;
-            }
-            
 
+                test++;
+
+
+            }
             else if (test == 1)
             {
                 player1.setCArd(random1.Next(2, 14));
@@ -745,66 +801,16 @@ namespace AdvancedClient
                 Random rand = new Random();
                 Card card;
                 String s;
-                int nr = rand.Next(1, 4);
-                if (nr == 1)
+                if (card0 <= 11)
                 {
-                    CardFactory cardfact = new CardFactory();
-                    Shape.card sh = Shape.card.SPADES;
-                    Image imge1 = cardfact.getShape(sh).draw(card0);
-                    pictureBox4.Image = imge1;
-                    s = "spades";
-                    client.Send("!#" + g + "/" + s);
-
+                    score += card0;
                 }
-                else if (nr == 2)
+                else if (card0 > 11)
                 {
-                    CardFactory cardfact1 = new CardFactory();
-                    Shape.card sh = Shape.card.HEART;
-                    s = cardfact1.getSh();
-                    Image imge1 = cardfact1.getShape(sh).draw(card0);
-                    pictureBox4.Image = imge1;
-                    s = "heart";
-                    client.Send("!#" + g + "/" + s);
-
+                    score += 10;
                 }
-                else if (nr == 3)
-                {
-                    CardFactory cardfact2 = new CardFactory();
-                    Shape.card sh = Shape.card.DIAMONDS;
-                    s = cardfact2.getSh();
-                    Image imge1 = cardfact2.getShape(sh).draw(card0);
-                    pictureBox4.Image = imge1;
-                    s = "diamonds";
-                    client.Send("!#" + g + "/" + s);
-
-
-                }
-                else if (nr == 4)
-                {
-                    CardFactory cardfact3 = new CardFactory();
-                    Shape.card sh = Shape.card.CLUBS;
-                    s = cardfact3.getSh();
-                    Image imge1 = cardfact3.getShape(sh).draw(card0);
-                    pictureBox4.Image = imge1;
-                    s = "clubs";
-                    client.Send("!#" + g + "/" + s);
-
-
-                }
-
-                test++;
-
-
-            }
-            else if (test == 2)
-            {
-                player1.setCArd(random1.Next(2, 14));
-                int card0 = player1.getCard();
-                String g = Convert.ToString(card0);
-                Shape shape1 = new Shape();
-                Random rand = new Random();
-                Card card;
-                String s;
+                label8.Text = Convert.ToString(score);
+                client.Send("s"+Convert.ToString(score));
                 int nr = rand.Next(1, 4);
                 if (nr == 1)
                 {
@@ -820,7 +826,6 @@ namespace AdvancedClient
                 {
                     CardFactory cardfact1 = new CardFactory();
                     Shape.card sh = Shape.card.HEART;
-                    s = cardfact1.getSh();
                     Image imge1 = cardfact1.getShape(sh).draw(card0);
                     pictureBox5.Image = imge1;
                     s = "heart";
@@ -831,7 +836,6 @@ namespace AdvancedClient
                 {
                     CardFactory cardfact2 = new CardFactory();
                     Shape.card sh = Shape.card.DIAMONDS;
-                    s = cardfact2.getSh();
                     Image imge1 = cardfact2.getShape(sh).draw(card0);
                     pictureBox5.Image = imge1;
                     s = "diamonds";
@@ -843,14 +847,31 @@ namespace AdvancedClient
                 {
                     CardFactory cardfact3 = new CardFactory();
                     Shape.card sh = Shape.card.CLUBS;
-                    s = cardfact3.getSh();
                     Image imge1 = cardfact3.getShape(sh).draw(card0);
                     pictureBox5.Image = imge1;
                     s = "clubs";
                     client.Send("@#" + g + "/" + s);
 
+                    
+
 
                 }
+
+                //deal1 = dealer.generateCard();
+                //String g1 = dealer.getCardNumber();
+                //String txt1 = dealer.getShape();
+                //client.Send("d#" + g1 + "/" + txt1);
+                //pictureBox11.Image = deal1;
+                //deal2 = dealer.generateCard();
+                //String g2 = dealer.getCardNumber();
+                //String  txt2 = dealer.getShape();
+                //client.Send("d#" + g2 + "/" + txt2);
+                //pictureBox11.Image = deal2;
+                //deal3 = dealer.generateCard();
+                //String  g3 = dealer.getCardNumber();
+                //String txt3 = dealer.getShape();
+                //client.Send("d#" + g3 + "/" + txt3);
+                //pictureBox11.Image = deal3;
             }
         }
 
