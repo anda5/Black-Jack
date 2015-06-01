@@ -326,9 +326,6 @@
     <None Include="Resources\split_focus.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\stand.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\stand_focus.png" />
   </ItemGroup>
   <ItemGroup>
@@ -521,6 +518,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\s14.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stand.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stand.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

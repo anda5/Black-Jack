@@ -113,12 +113,12 @@ namespace AdvancedClient
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "" && textBox2.Text != "" && textBox5.Text != "")
+            if (textBox1.Text != "" )
             {
                 client = new Client();
                 client.ClientName = textBox1.Text;
-                client.ServerIp = textBox2.Text;
-                client.ServerPort = textBox5.Text;
+                client.ServerIp = "192.168.0.100";
+                client.ServerPort = "80";
 
 
                 client.OnClientConnected += new OnClientConnectedDelegate(client_OnClientConnected);
@@ -923,6 +923,31 @@ namespace AdvancedClient
                 pictureBox13.Image = deal3;
 
             }
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
         }
            
          
