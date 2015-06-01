@@ -44,9 +44,10 @@ namespace AdvancedClient
         int card6;
         int number;
         String shape;
-        // String literas;
+
         Boolean tests;
         String get,get1;
+        int dealerScore = 0;
        
         
         public Form1()
@@ -709,6 +710,15 @@ namespace AdvancedClient
                    pictureBox10.Image = dealer.generateCard();
                    gi = dealer.getCardNumber();
                    txt = dealer.getShape();
+                   if (Convert.ToInt16(gi) <= 11)
+                   {
+                       dealerScore += Convert.ToInt16(gi);
+                   }
+                   else if (Convert.ToInt16(gi) > 11)
+                   {
+                       dealerScore += 10;
+                   }
+                   label10.Text = Convert.ToString(score);
                    client.Send("d#" + gi + "/" + txt);
                }
            }
@@ -857,29 +867,61 @@ namespace AdvancedClient
 
                 }
 
-                //deal1 = dealer.generateCard();
-                //String g1 = dealer.getCardNumber();
-                //String txt1 = dealer.getShape();
-                //client.Send("d#" + g1 + "/" + txt1);
-                //pictureBox11.Image = deal1;
-                //deal2 = dealer.generateCard();
-                //String g2 = dealer.getCardNumber();
-                //String  txt2 = dealer.getShape();
-                //client.Send("d#" + g2 + "/" + txt2);
-                //pictureBox11.Image = deal2;
-                //deal3 = dealer.generateCard();
-                //String  g3 = dealer.getCardNumber();
-                //String txt3 = dealer.getShape();
-                //client.Send("d#" + g3 + "/" + txt3);
-                //pictureBox11.Image = deal3;
+        
             }
         }
-
+        
         private void button6_Click(object sender, EventArgs e)
         {
-            if (get1 == "1")
+            if (Convert.ToInt16(label8.Text)<21)
             {
-                
+                deal1 = dealer.generateCard();
+                String g1 = dealer.getCardNumber();
+                int card0 = Convert.ToInt32(g1);
+                if (card0 <= 11)
+                {
+                    dealerScore+= card0;
+                }
+                else if (card0 > 11)
+                {
+                   dealerScore += 10;
+                }
+                label10.Text = Convert.ToString(score);
+                client.Send("s" + Convert.ToString(score));
+                String txt1 = dealer.getShape();
+                client.Send("d#" + g1 + "/" + txt1);
+                pictureBox11.Image = deal1;
+                deal2 = dealer.generateCard();
+                String g2 = dealer.getCardNumber();
+                String txt2 = dealer.getShape();
+                int card1 = Convert.ToInt32(g2);
+                if (card1 <= 11)
+                {
+                    dealerScore += card0;
+                }
+                else if (card1 > 11)
+                {
+                    dealerScore += 10;
+                }
+                label10.Text = Convert.ToString(score);
+                client.Send("d#" + g2 + "/" + txt2);
+                pictureBox12.Image = deal2;
+                deal3 = dealer.generateCard();
+                String g3 = dealer.getCardNumber();
+                String txt3 = dealer.getShape();
+                int card2 = Convert.ToInt32(g3);
+                if (card2 <= 11)
+                {
+                    dealerScore += card2;
+                }
+                else if (card2 > 11)
+                {
+                    dealerScore += 10;
+                }
+                label10.Text = Convert.ToString(score);
+                client.Send("d#" + g3 + "/" + txt3);
+                pictureBox13.Image = deal3;
+
             }
         }
            
