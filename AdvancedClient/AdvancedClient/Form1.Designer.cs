@@ -64,6 +64,8 @@
             this.button7 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
@@ -365,6 +367,8 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ControlText;
             this.panel1.BackgroundImage = global::AdvancedClient.Properties.Resources.background;
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.button11);
             this.panel1.Controls.Add(this.button10);
             this.panel1.Controls.Add(this.button9);
@@ -413,6 +417,7 @@
             this.button11.Size = new System.Drawing.Size(31, 34);
             this.button11.TabIndex = 46;
             this.button11.UseVisualStyleBackColor = false;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // button10
             // 
@@ -425,6 +430,7 @@
             this.button10.Size = new System.Drawing.Size(38, 34);
             this.button10.TabIndex = 45;
             this.button10.UseVisualStyleBackColor = false;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button9
             // 
@@ -437,6 +443,7 @@
             this.button9.Size = new System.Drawing.Size(38, 34);
             this.button9.TabIndex = 44;
             this.button9.UseVisualStyleBackColor = false;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button8
             // 
@@ -449,6 +456,7 @@
             this.button8.Size = new System.Drawing.Size(38, 34);
             this.button8.TabIndex = 43;
             this.button8.UseVisualStyleBackColor = false;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button7
             // 
@@ -461,6 +469,7 @@
             this.button7.Size = new System.Drawing.Size(38, 34);
             this.button7.TabIndex = 42;
             this.button7.UseVisualStyleBackColor = false;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // textBox3
             // 
@@ -483,6 +492,27 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(197, 260);
             this.panel3.TabIndex = 41;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe Print", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.Control;
+            this.label1.Location = new System.Drawing.Point(555, 535);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 23);
+            this.label1.TabIndex = 47;
+            this.label1.Text = "MONEY";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.label2.Location = new System.Drawing.Point(627, 541);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(94, 13);
+            this.label2.TabIndex = 48;
+            this.label2.Text = "                           0";
             // 
             // Form1
             // 
@@ -551,6 +581,8 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
 

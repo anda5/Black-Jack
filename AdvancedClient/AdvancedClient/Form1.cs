@@ -23,6 +23,7 @@ namespace AdvancedClient
     public delegate void ChangeLabel8(string txt);
     public delegate void ChangeLabel11(string txt);
     public delegate void ChangeTextBox(string txt);
+    public delegate void ChangeMoney(string txt);
     public partial class Form1 : Form
     {
         String clientName;
@@ -39,7 +40,9 @@ namespace AdvancedClient
 
 
         Client client;
-
+        int yourMoney;
+        int dealerMoney;
+        int opponentMoney;
 
         Card card;
 
@@ -68,10 +71,7 @@ namespace AdvancedClient
         int dealerScore = 0;
 
 
-        public Form1()
-        {
-            InitializeComponent();
-        }
+      
         public void ChageTextBox(string txt)
         {
             if (textBox3.InvokeRequired)
@@ -135,6 +135,22 @@ namespace AdvancedClient
                 synthesizer.Speak(label11.Text);
 
                 reload();
+            }
+        }
+        public void ChangeMoney(string txt)
+        {
+            if (label11.InvokeRequired)
+            {
+                Invoke(new Update(ChangeMoney), new object[] { txt });
+            }
+            else
+            {
+                
+
+                String[] m = txt.Split('#');
+                opponentMoney += Convert.ToInt16(m[1]);
+                label2.Text = Convert.ToString(yourMoney);
+                
             }
         }
         private void label1_Click(object sender, EventArgs e)
@@ -714,6 +730,10 @@ namespace AdvancedClient
                 ChageLabel(R.ReceivedData);
 
             }
+            if (mesaj.StartsWith("m#"))
+            {
+                ChangeMoney(R.ReceivedData);
+            }
             else
             {
 
@@ -1207,66 +1227,111 @@ namespace AdvancedClient
             SpeechSynthesizer synthesizer = new SpeechSynthesizer();
             synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Senior);
             synthesizer.Volume = 100;  // 0...100
-            synthesizer.Rate = 1; 
+            synthesizer.Rate = 1;
+            client.Send("m#" + label2.Text);
+            dealerMoney = 10000;
 
-            if (scorePlyer1 > 21)
-            {
-                label11.Text = "you lost";
-                client.Send("w#" +"your opponent lost");
-                synthesizer.Speak(label11.Text);
-                
-            }
-            else if (scorePlayer2 > 21)
-            {
-                label11.Text = "your opponent lost";
-                client.Send("w#" + "you lost");
-                synthesizer.Speak(label11.Text);
-            }
-            else if (dealerScore > 21)
-            {
-                label11.Text = "dealer lost";
-                client.Send("w#" + label11.Text);
-                synthesizer.Speak(label11.Text);
 
-            }
-
-            else  if (scorePlyer1 == 21)
+              if (scorePlyer1 == 21)
             {
                 label11.Text = "Black Jack";
                 client.Send("w#" + label11.Text);
                 synthesizer.Speak(label11.Text);
+                yourMoney += dealerMoney * 3 / 2+opponentMoney;
+                dealerMoney -= 2 * (dealerMoney * 3 / 2);
+                opponentMoney = 0;
+
             }
-            else if (scorePlayer2 == 21)
+            if (scorePlayer2 == 21)
             {
                 label11.Text = "Black Jack";
                 client.Send("w#" + label11.Text);
                 synthesizer.Speak(label11.Text);
+               
+                opponentMoney += dealerMoney * 3 / 2 + yourMoney; 
+                dealerMoney -= 2 * (dealerMoney * 3 / 2);
+                yourMoney = 0;
             }
-            else if (dealerScore == 21)
+             if (dealerScore == 21)
             {
                 label11.Text = "Black Jack";
                 client.Send("w#" + label11.Text);
                 synthesizer.Speak(label11.Text);
+               
+                dealerMoney += yourMoney + opponentMoney;
+                yourMoney = 0; ;
+                opponentMoney = 0;
             }
-            else if (dealerScore > 21 && scorePlayer2 < 21 && scorePlyer1 < 21)
+              if (dealerScore > 21 && scorePlayer2 < 21 && scorePlyer1 < 21)
             {
                 label11.Text = " players win";
                 client.Send("w#" + label11.Text);
                 synthesizer.Speak(label11.Text);
+                yourMoney += dealerMoney * 3 / 2;
+                opponentMoney += dealerMoney * 3 / 2;
+                dealerMoney -= 2 * (dealerMoney * 3 / 2);
             }
-            else if (dealerScore > 21 && scorePlyer1 < 21)
+             else if (dealerScore > 21 && scorePlyer1 < 21 && scorePlayer2 > 21)
             {
                 label11.Text = "you win";
                 client.Send("w#" + "your opponent wins");
                 synthesizer.Speak(label11.Text);
+                yourMoney += dealerMoney * 3 / 2+opponentMoney;
+                
+                dealerMoney -=  (dealerMoney * 3 / 2);
+                opponentMoney = 0;
+
             }
-            else if (dealerScore > 21 && scorePlayer2 < 21)
+             else if (dealerScore > 21 && scorePlayer2 > 21 && scorePlayer2 < 21)
             {
                 label11.Text = "your opponent wins";
                 client.Send("w#" + "you win");
                 synthesizer.Speak(label11.Text);
+                
+                opponentMoney = dealerMoney * 3 / 2 + opponentMoney;
+                dealerMoney -= (dealerMoney * 3 / 2);
+                yourMoney = 0;
 
             }
+            else if (dealerScore < 21) {
+
+                label11.Text = "dealer win";
+                client.Send("w#" + label11.Text);
+                synthesizer.Speak(label11.Text);
+                dealerMoney += yourMoney + opponentMoney;
+                yourMoney = 0;
+                opponentMoney = 0;
+                
+            }
+
+              else if (scorePlyer1 > 21)
+              {
+                  label11.Text = "you lost";
+                  client.Send("w#" + "your opponent lost");
+                  synthesizer.Speak(label11.Text);
+                  opponentMoney += yourMoney;
+                  yourMoney = 0;
+
+              }
+              else if (scorePlayer2 > 21)
+              {
+                  label11.Text = "your opponent lost";
+                  client.Send("w#" + "you lost");
+                  synthesizer.Speak(label11.Text);
+                  yourMoney += opponentMoney;
+                  opponentMoney = 0;
+              }
+              else if (dealerScore > 21)
+              {
+                  label11.Text = "dealer lost";
+                  client.Send("w#" + label11.Text);
+                  synthesizer.Speak(label11.Text);
+                  opponentMoney = dealerScore * 3 / 2;
+                  yourMoney = dealerMoney * 3 / 2;
+                  dealerMoney -= 2 * (dealerMoney * 3 / 2);
+
+              }
+            label2.Text =Convert.ToString(yourMoney);
 
             reload();
         }
@@ -1320,6 +1385,39 @@ namespace AdvancedClient
                 scorePlyer1 += 10;
 
             }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            yourMoney += 5;
+            label2.Text =Convert.ToString(yourMoney);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+
+            yourMoney += 25;
+            label2.Text = Convert.ToString(yourMoney);
+
+        }
+        
+        private void button11_Click(object sender, EventArgs e)
+        {
+            yourMoney += 100;
+            label2.Text = Convert.ToString(yourMoney);
+
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            yourMoney += 500;
+            label2.Text = Convert.ToString(yourMoney);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            yourMoney +=1000;
+            label2.Text = Convert.ToString(yourMoney);
         }
 
       
