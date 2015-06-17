@@ -83,6 +83,16 @@ namespace AdvancedClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap c {
+            get {
+                object obj = ResourceManager.GetObject("c", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap cardbg {
             get {
                 object obj = ResourceManager.GetObject("cardbg", resourceCulture);
@@ -223,6 +233,26 @@ namespace AdvancedClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap five {
+            get {
+                object obj = ResourceManager.GetObject("five", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap fivehundred {
+            get {
+                object obj = ResourceManager.GetObject("fivehundred", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap h10 {
             get {
                 object obj = ResourceManager.GetObject("h10", resourceCulture);
@@ -346,6 +376,26 @@ namespace AdvancedClient.Properties {
         public static System.Drawing.Bitmap h9 {
             get {
                 object obj = ResourceManager.GetObject("h9", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap onehundred {
+            get {
+                object obj = ResourceManager.GetObject("onehundred", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap onethousand {
+            get {
+                object obj = ResourceManager.GetObject("onethousand", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -483,6 +533,26 @@ namespace AdvancedClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap stand {
+            get {
+                object obj = ResourceManager.GetObject("stand", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap stand1 {
+            get {
+                object obj = ResourceManager.GetObject("stand1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap t10 {
             get {
                 object obj = ResourceManager.GetObject("t10", resourceCulture);
@@ -606,6 +676,16 @@ namespace AdvancedClient.Properties {
         public static System.Drawing.Bitmap t9 {
             get {
                 object obj = ResourceManager.GetObject("t9", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap twentyfive {
+            get {
+                object obj = ResourceManager.GetObject("twentyfive", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -68,7 +68,7 @@ namespace AdvanedServer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            server = new Server("192.168.0.100", "80");
+            server = new Server("192.168.56.1", "80");
             server.OnClientConnected += new OnConnectedDelegate(server_OnClientConected);
             server.OnClientDisconnected += new OnDisconnectedDelegate(server_OnClientDisconected);
             server.OnDataReceived += new OnReceivedDelegate(server_OnRecived);
@@ -130,6 +130,83 @@ namespace AdvanedServer
                     }
                 }
             else if (msg.StartsWith("@#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
+            else if (msg.StartsWith("d#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
+            else if (msg.StartsWith("d1#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
+            else if (msg.StartsWith("d2#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
+            else if (msg.StartsWith("d3#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
+            else if (msg.StartsWith("w#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
+            else if (msg.StartsWith("*s"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
+            else if (msg.StartsWith("ds"))
             {
                 if (R.Name == player1)
                 {

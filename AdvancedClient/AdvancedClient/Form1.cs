@@ -12,55 +12,131 @@ using System.Drawing.Imaging;
 using System.Resources;
 using AdvancedClient.Properties;
 using System.IO;
+using System.Threading;
+using System.Media;
+using System.Speech.Synthesis;
 
 namespace AdvancedClient
 {
     public delegate void Update(string txt);
-    public delegate void RememberImage(string txt);
+    public delegate void ChangeLabel(string txt);
+    public delegate void ChangeLabel8(string txt);
+    public delegate void ChangeLabel11(string txt);
+    public delegate void ChangeTextBox(string txt);
     public partial class Form1 : Form
     {
+        String clientName;
+        public Form1(String a)
+        {
+            InitializeComponent();
+            clientName = a;
+            pictureBox10.Image.Tag = "checked";
+            pictureBox11.Image.Tag = "checked";
+            pictureBox12.Image.Tag = "checked";
+            pictureBox13.Image.Tag = "checked";
+
+        }
+
 
         Client client;
-       
+
 
         Card card;
 
         Player player1 = new Player();
         Player player2 = new Player();
+        Dealer dealer = new Dealer();
         Random random = new Random();
         Random random1 = new Random();
         Random random2 = new Random();
         Random random3 = new Random();
+        int scorePlyer1 = 0, scorePlayer2 = 0;
+        String gi, txt;
         Image img, img1;
-     
+        Image deal1, deal2, deal3;
 
-        int card1;
+
+
         int card2;
         int card5;
         int card6;
         int number;
         String shape;
-        // String literas;
+        String dealermes;
         Boolean tests;
-        String get,get1;
-       
-        
+        String get, get1;
+        int dealerScore = 0;
+
+
         public Form1()
         {
             InitializeComponent();
         }
         public void ChageTextBox(string txt)
         {
-            if(textBox3.InvokeRequired){
-                Invoke(new Update(ChageTextBox),new object[] {txt});
-            }else{
+            if (textBox3.InvokeRequired)
+            {
+                Invoke(new Update(ChageTextBox), new object[] { txt });
+            }
+            else
+            {
 
-                textBox3.Text += txt + "\r\n"; 
-                
+                textBox3.Text += txt + "\r\n";
+
             }
         }
-        
 
+        public void ChageLabel8(string txt)
+        {
+            if (label9.InvokeRequired)
+            {
+                Invoke(new Update(ChageLabel8), new object[] { txt });
+            }
+            else
+            {
+                String[] m = txt.Split('s');
+                player2mes = m[1];
+                label9.Text = player2mes;
+
+
+            }
+        }
+
+        public void ChageLabel(string txt)
+        {
+            if (label10.InvokeRequired)
+            {
+                Invoke(new Update(ChageLabel), new object[] { txt });
+            }
+            else
+            {
+                String[] m = txt.Split('s');
+                dealermes = m[1];
+                label10.Text = dealermes;
+
+
+            }
+        }
+        public void ChageLabel11(string txt)
+        {
+            if (label11.InvokeRequired)
+            {
+                Invoke(new Update(ChageLabel11), new object[] { txt });
+            }
+            else
+            {
+                SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+                synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Senior);
+                synthesizer.Volume = 100;  // 0...100
+                synthesizer.Rate = 1; 
+
+                String[] m = txt.Split('#');
+                label11.Text = m[1];
+                synthesizer.Speak(label11.Text);
+
+                reload();
+            }
+        }
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -81,7 +157,7 @@ namespace AdvancedClient
             if (client != null && client.IsConnected)
             {
                 client.Send(textBox4.Text);
-              
+
                 textBox4.Clear();
 
 
@@ -90,33 +166,35 @@ namespace AdvancedClient
 
         private void button3_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "" && textBox2.Text != "" && textBox5.Text != "")
-            {
-                client = new Client();
-                client.ClientName = textBox1.Text;
-                client.ServerIp = textBox2.Text;
-                client.ServerPort = textBox5.Text;
+            //if (textBox1.Text != "" )
+            //{
+
+            client = new Client();
+            client.ClientName = clientName;
+            client.ServerIp = "192.168.56.1";
+            client.ServerPort = "80";
 
 
-                client.OnClientConnected += new OnClientConnectedDelegate(client_OnClientConnected);
-                client.OnClientConnecting += new OnClientConnectingDelegate(client_OnClientConnecting);
-                client.OnClientDisconnected += new OnClientDisconnectedDelegate(client_OnClientDisconected);
-                client.OnClientError += new OnClientErrorDelegate(client_OnClientError);
-                client.OnClientFileSending += new OnClientFileSendingDelegate(client_OnClientFileSending);
-                client.OnDataReceived += new OnClientReceivedDelegate(client_OnClientRecivedDelegate);
-                client.Connect();
-            }
-            else
-            {
-                MessageBox.Show("Fill the textBox");
-            }
+            client.OnClientConnected += new OnClientConnectedDelegate(client_OnClientConnected);
+            client.OnClientConnecting += new OnClientConnectingDelegate(client_OnClientConnecting);
+            client.OnClientDisconnected += new OnClientDisconnectedDelegate(client_OnClientDisconected);
+            client.OnClientError += new OnClientErrorDelegate(client_OnClientError);
+            client.OnClientFileSending += new OnClientFileSendingDelegate(client_OnClientFileSending);
+            client.OnDataReceived += new OnClientReceivedDelegate(client_OnClientRecivedDelegate);
+            client.Connect();
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Fill the textBox");
+            //}
+
         }
-
+        String player2mes;
 
         private void client_OnClientRecivedDelegate(object Sender, ClientReceivedArguments R)
         {
@@ -130,6 +208,8 @@ namespace AdvancedClient
                 String mesaj2 = text[1];
                 int cardNumber = CardNumber(mesaj1);
                 String cardShape = CardShape(mesaj2);
+                scorePlayer2 += cardNumber;
+
                 for (int i = 2; i <= 14; i++)
                 {
                     if (cardNumber == i)
@@ -150,7 +230,7 @@ namespace AdvancedClient
                             int card = player1.getCard();
                             CardFactory cardfact = new CardFactory();
                             Shape.card sh = Shape.card.DIAMONDS;
-                            Image imge1 =  cardfact.getShape(sh).draw(card);
+                            Image imge1 = cardfact.getShape(sh).draw(card);
                             pictureBox6.Image = imge1;
 
                         }
@@ -178,12 +258,254 @@ namespace AdvancedClient
                     }
                 }
             }
-                if (mesaj.StartsWith("$#"))
+            if (mesaj.StartsWith("$#"))
+            {
+                String[] text = mesaj.Split('/');
+                String mesaj1 = text[0];
+                String mesaj2 = text[1];
+                int cardNumber = CardNumberOne(mesaj1);
+                String cardShape = CardShape(mesaj2);
+
+                for (int i = 2; i <= 14; i++)
                 {
+                    if (cardNumber == i)
+                    {
+                        if (cardShape == "heart")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.HEART;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox7.Image = imge1;
+                        }
+
+                        else if (cardShape == "diamonds")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.DIAMONDS;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox7.Image = imge1;
+
+                        }
+                        else if (cardShape == "clubs")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.CLUBS;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox7.Image = imge1;
+
+
+                        }
+                        else if (cardShape == "spades")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.SPADES;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox7.Image = imge1;
+
+                        }
+                    }
+                }
+            }
+            if (mesaj.StartsWith("!#"))
+            {
+                String[] text = mesaj.Split('/');
+                String mesaj1 = text[0];
+                String mesaj2 = text[1];
+                int cardNumber = CardNumberTwo(mesaj1);
+                String cardShape = CardShape(mesaj2);
+
+                for (int i = 2; i <= 14; i++)
+                {
+                    if (cardNumber == i)
+                    {
+                        if (cardShape == "heart")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.HEART;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox8.Image = imge1;
+                        }
+
+                        else if (cardShape == "diamonds")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.DIAMONDS;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox8.Image = imge1;
+
+                        }
+                        else if (cardShape == "clubs")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.CLUBS;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox8.Image = imge1;
+
+
+                        }
+                        else if (cardShape == "spades")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.SPADES;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox8.Image = imge1;
+
+                        }
+                    }
+                }
+            }
+            if (mesaj.StartsWith("@#"))
+            {
+                String[] text = mesaj.Split('/');
+                String mesaj1 = text[0];
+                String mesaj2 = text[1];
+                int cardNumber = CardNumberThree(mesaj1);
+                String cardShape = CardShape(mesaj2);
+
+                for (int i = 2; i <= 14; i++)
+                {
+                    if (cardNumber == i)
+                    {
+                        if (cardShape == "heart")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.HEART;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox9.Image = imge1;
+                        }
+
+                        else if (cardShape == "diamonds")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.DIAMONDS;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox9.Image = imge1;
+
+                        }
+                        else if (cardShape == "clubs")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.CLUBS;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox9.Image = imge1;
+
+
+                        }
+                        else if (cardShape == "spades")
+                        {
+                            player1.setCArd(i);
+                            int card = player1.getCard();
+                            CardFactory cardfact = new CardFactory();
+                            Shape.card sh = Shape.card.SPADES;
+                            Image imge1 = cardfact.getShape(sh).draw(card);
+                            pictureBox9.Image = imge1;
+
+                        }
+                    }
+                }
+            }
+           int test = 0;
+            if (mesaj.StartsWith("d#"))
+            {
+
+                if (pictureBox10.Image.Tag == "checked")
+                {
+                    pictureBox10.Image.Tag = "dealer";
                     String[] text = mesaj.Split('/');
                     String mesaj1 = text[0];
                     String mesaj2 = text[1];
-                    int cardNumber = CardNumberOne(mesaj1);
+                    int cardNumber = CardNumberDealer(mesaj1);
+                    String cardShape = CardShape(mesaj2);
+                    for (int i = 2; i <= 14; i++)
+                    {
+                        if (cardNumber == i)
+                        {
+                            if (cardShape == "heart")
+                            {
+                                dealer.setCArd(i);
+                                int card = dealer.getCard();
+                                CardFactory cardfact = new CardFactory();
+                                Shape.card sh = Shape.card.HEART;
+                                Image imge1 = cardfact.getShape(sh).draw(card);
+
+                                pictureBox10.Image = imge1;
+
+                            }
+
+                            else if (cardShape == "diamonds")
+                            {
+                                dealer.setCArd(i);
+                                int card = dealer.getCard();
+                                CardFactory cardfact = new CardFactory();
+                                Shape.card sh = Shape.card.DIAMONDS;
+                                Image imge1 = cardfact.getShape(sh).draw(card);
+                                pictureBox10.Image = imge1;
+
+
+                            }
+                            else if (cardShape == "clubs")
+                            {
+                                dealer.setCArd(i);
+                                int card = dealer.getCard();
+                                CardFactory cardfact = new CardFactory();
+                                Shape.card sh = Shape.card.CLUBS;
+                                Image imge1 = cardfact.getShape(sh).draw(card);
+                                pictureBox10.Image = imge1;
+
+
+
+                            }
+                            else if (cardShape == "spades")
+                            {
+                                dealer.setCArd(i);
+                                int card = dealer.getCard();
+                                CardFactory cardfact = new CardFactory();
+                                Shape.card sh = Shape.card.SPADES;
+                                Image imge1 = cardfact.getShape(sh).draw(card);
+                                pictureBox10.Image = imge1;
+
+
+                            }
+
+                        }
+                    }
+                   test++;
+                }
+
+            }
+
+            if (mesaj.StartsWith("d2#"))
+            {
+
+                if (pictureBox12.Image.Tag == "checked")
+                {
+                    pictureBox12.Image.Tag = "dealer";
+                    String[] text = mesaj.Split('/');
+                    String mesaj1 = text[0];
+                    String mesaj2 = text[1];
+                    int cardNumber = CardNumberDealer2(mesaj1);
                     String cardShape = CardShape(mesaj2);
                     for (int i = 2; i <= 14; i++)
                     {
@@ -196,7 +518,9 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.HEART;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox7.Image = imge1;
+
+                                pictureBox12.Image = imge1;
+
                             }
 
                             else if (cardShape == "diamonds")
@@ -206,7 +530,8 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.DIAMONDS;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox7.Image = imge1;
+                                pictureBox12.Image = imge1;
+
 
                             }
                             else if (cardShape == "clubs")
@@ -216,7 +541,8 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.CLUBS;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox7.Image = imge1;
+                                pictureBox12.Image = imge1;
+
 
 
                             }
@@ -227,18 +553,27 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.SPADES;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox7.Image = imge1;
+                                pictureBox12.Image = imge1;
+
 
                             }
+
                         }
                     }
                 }
-                if (mesaj.StartsWith("!#"))
+
+
+            }
+            if (mesaj.StartsWith("d3#"))
+            {
+                if (pictureBox13.Image.Tag == "checked")
                 {
+                    pictureBox13.Image.Tag = "asad";
+
                     String[] text = mesaj.Split('/');
                     String mesaj1 = text[0];
                     String mesaj2 = text[1];
-                    int cardNumber = CardNumberTwo(mesaj1);
+                    int cardNumber = CardNumberDealer3(mesaj1);
                     String cardShape = CardShape(mesaj2);
                     for (int i = 2; i <= 14; i++)
                     {
@@ -251,7 +586,9 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.HEART;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox8.Image = imge1;
+
+                                pictureBox13.Image = imge1;
+
                             }
 
                             else if (cardShape == "diamonds")
@@ -261,7 +598,8 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.DIAMONDS;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox8.Image = imge1;
+                                pictureBox13.Image = imge1;
+
 
                             }
                             else if (cardShape == "clubs")
@@ -271,7 +609,8 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.CLUBS;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox8.Image = imge1;
+                                pictureBox13.Image = imge1;
+
 
 
                             }
@@ -282,18 +621,25 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.SPADES;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox8.Image = imge1;
+                                pictureBox13.Image = imge1;
+
 
                             }
+
                         }
                     }
                 }
-                if (mesaj.StartsWith("@#"))
+            }
+            if (mesaj.StartsWith("d1#"))
+            {
+
+                if (pictureBox11.Image.Tag == "checked")
                 {
+                    pictureBox11.Image.Tag = "dada";
                     String[] text = mesaj.Split('/');
                     String mesaj1 = text[0];
                     String mesaj2 = text[1];
-                    int cardNumber = CardNumberThree(mesaj1);
+                    int cardNumber = CardNumberDealer1(mesaj1);
                     String cardShape = CardShape(mesaj2);
                     for (int i = 2; i <= 14; i++)
                     {
@@ -306,7 +652,9 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.HEART;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox9.Image = imge1;
+
+                                pictureBox11.Image = imge1;
+
                             }
 
                             else if (cardShape == "diamonds")
@@ -316,7 +664,8 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.DIAMONDS;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox9.Image = imge1;
+                                pictureBox11.Image = imge1;
+
 
                             }
                             else if (cardShape == "clubs")
@@ -326,7 +675,8 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.CLUBS;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox9.Image = imge1;
+                                pictureBox11.Image = imge1;
+
 
 
                             }
@@ -337,29 +687,103 @@ namespace AdvancedClient
                                 CardFactory cardfact = new CardFactory();
                                 Shape.card sh = Shape.card.SPADES;
                                 Image imge1 = cardfact.getShape(sh).draw(card);
-                                pictureBox9.Image = imge1;
+                                pictureBox11.Image = imge1;
+
 
                             }
+
                         }
                     }
                 }
-                    else
-                    {
-                        ChageTextBox(R.ReceivedData);
-                    }
-                }
+            }
+            if (mesaj.StartsWith("w#"))
+            {
+                ChageLabel11(R.ReceivedData);
+                
 
-      
+            }
+
+            if (mesaj.StartsWith("*s"))
+            {
+
+                ChageLabel8(R.ReceivedData);
+
+            }
+            if (mesaj.StartsWith("ds"))
+            {
+                ChageLabel(R.ReceivedData);
+
+            }
+            else
+            {
+
+
+                ChageTextBox(R.ReceivedData);
+
+            }
+
+        }
+
+
+        public int CardNumberDealer1(String mesaj)
+        {
+            String[] text = { "d1#0", "d1#1", "d1#2", "d1#3", "d1#4", "d1#5", "d1#6", "d1#7", "d1#8", "d1#9", "d1#10", "d1#11", "d1#12", "d1#13", "d1#14" };
+
+            for (int i = 0; i <= 14; i++)
+            {
+                if (mesaj == text[i])
+                    number = i;
+            }
+            return number;
+
+        }
+        public int CardNumberDealer2(String mesaj)
+        {
+            String[] text = { "d2#0", "d2#1", "d2#2", "d2#3", "d2#4", "d2#5", "d2#6", "d2#7", "d2#8", "d2#9", "d2#10", "d2#11", "d2#12", "d2#13", "d2#14" };
+
+            for (int i = 0; i <= 14; i++)
+            {
+                if (mesaj == text[i])
+                    number = i;
+            }
+            return number;
+
+        }
+        public int CardNumberDealer3(String mesaj)
+        {
+            String[] text = { "d3#0", "d3#1", "d3#2", "d3#3", "d3#4", "d3#5", "d3#6", "d3#7", "d3#8", "d3#9", "d3#10", "d3#11", "d3#12", "d3#13", "d3#14" };
+
+            for (int i = 0; i <= 14; i++)
+            {
+                if (mesaj == text[i])
+                    number = i;
+            }
+            return number;
+
+        }
+        public int CardNumberDealer(String mesaj)
+        {
+            String[] text = { "d#0", "d#1", "d#2", "d#3", "d#4", "d#5", "d#6", "d#7", "d#8", "d#9", "d#10", "d#11", "d#12", "d#13", "d#14" };
+
+            for (int i = 0; i <= 14; i++)
+            {
+                if (mesaj == text[i])
+                    number = i;
+            }
+            return number;
+
+        }
 
         public int CardNumber(String mesaj)
         {
             String[] text = { "#0", "#1", "#2", "#3", "#4", "#5", "#6", "#7", "#8", "#9", "#10", "#11", "#12", "#13", "#14" };
 
-            for (int i = 0; i <= 14; i++) {
-                if(mesaj==text[i])
-                 number = i;
+            for (int i = 0; i <= 14; i++)
+            {
+                if (mesaj == text[i])
+                    number = i;
             }
-             return number;
+            return number;
 
         }
         public int CardNumberOne(String mesaj)
@@ -401,7 +825,8 @@ namespace AdvancedClient
         public String CardShape(string mesaj)
         {
             String[] text = { "heart", "clubs", "diamonds", "spades" };
-            foreach(String s in text){
+            foreach (String s in text)
+            {
                 if (mesaj == s)
                 {
                     shape = s;
@@ -410,11 +835,11 @@ namespace AdvancedClient
             return shape;
         }
 
-      
-       
 
-                       
-        
+
+
+
+
         private void client_OnClientFileSending(object Sender, ClientFileSendingArguments R)
         {
 
@@ -433,7 +858,7 @@ namespace AdvancedClient
         private void client_OnClientConnecting(object Sender, ClientConnectingArguments R)
         {
             ChageTextBox(R.EventMessage);
-           // RememberImage(R.EventMessage);
+            // RememberImage(R.EventMessage);
         }
 
         void client_OnClientConnected(object Sender, ClientConnectedArguments R)
@@ -469,86 +894,100 @@ namespace AdvancedClient
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-          
+
         }
-        
-     
-        private void Start_Click(object sender, EventArgs e)
+        int t = 0;
+        private void deal()
         {
+            SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+            synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Senior);
+            synthesizer.Volume = 100;  // 0...100
+            synthesizer.Rate = 1;     // -10...10
 
-                player1.setCArd(random.Next(2, 14));
-                card1 = player1.getCard();
-                get = Convert.ToString(card1);
-                Shape shape = new Shape();
-                Random rand = new Random();
-                Card card;
-                String s;
-                
-                int nr = rand.Next(1, 4);
-                if (nr == 1)
-                {
-                    
-                    CardFactory cardfact = new CardFactory();
-                    Shape.card sh = Shape.card.SPADES;
-                    Image imge1 = cardfact.getShape(sh).draw(card1);
-                    pictureBox2.Image = imge1;
-                    s = "spades";
-                    client.Send("#"+get+"/"+s);
+            // Synchronous
+            synthesizer.Speak("Deal");
 
-                }
-                else if (nr == 2)
-                {
-                   
-                    CardFactory cardfact1 = new CardFactory();
-                    Shape.card sh = Shape.card.HEART;
-                    s = cardfact1.getSh();
-                    Image imge1 = cardfact1.getShape(sh).draw(card1);
-                    pictureBox2.Image = imge1;
-                    s = "heart";
+            pictureBox2.Image = player1.generateCard(client, "#");
+            String number = player1.getCardNumber();
+            String shape = player1.getShape();
+            if (Convert.ToInt32(number) <= 11)
+            {
+                scorePlyer1 += Convert.ToInt16(number);
 
-                    client.Send("#" + get + "/" + s);
-                    
-                   
-                 
-                }
-                else if (nr == 3)
-                {
-                    
-                    CardFactory cardfact2 = new CardFactory();
-                    Shape.card sh = Shape.card.DIAMONDS;
-                    s = cardfact2.getSh();
-                    Image imge1 = cardfact2.getShape(sh).draw(card1);
-                    pictureBox2.Image = imge1;
-                     s = "diamonds";
 
-                     client.Send("#" + get + "/" + s);
-                    
+            }
+            else if (Convert.ToInt32(number) > 11)
+            {
+                scorePlyer1 += 10;
 
-                }
-                else if (nr == 4)
-                {
-                    
-                    CardFactory cardfact3 = new CardFactory();
-                    Shape.card sh = Shape.card.CLUBS;
-                    s = cardfact3.getSh();
-                    Image image1= cardfact3.getShape(sh).draw(card1);
-                    pictureBox2.Image = image1;
-                    s = "clubs";
-                    client.Send("#" + get + "/" + s);
-                  
 
-                }
-             
-  
             }
 
 
-        int test=0;
-       
+
+            Player player3 = new Player();
+            pictureBox3.Image = player3.generateCard(client, "$#");
+            String number1 = player3.getCardNumber();
+            String shape1 = player3.getShape();
+            if (Convert.ToInt32(number1) <= 11)
+            {
+                scorePlyer1 += Convert.ToInt32(number1);
+
+
+            }
+            else if (Convert.ToInt32(number1) > 11)
+            {
+                scorePlyer1 += 10;
+
+            }
+
+
+            label8.Text = Convert.ToString(scorePlyer1);
+            client.Send("*s" + Convert.ToString(scorePlyer1));
+
+
+            if (pictureBox10.Image.Tag == "checked")
+            {
+                pictureBox10.Image.Tag = "unchecked";
+                pictureBox10.Image = dealer.generateCard(client, "d#");
+                gi = dealer.getCardNumber();
+                txt = dealer.getShape();
+                if (Convert.ToInt16(gi) <= 11)
+                {
+                    dealerScore += Convert.ToInt16(gi);
+
+                }
+                else if (Convert.ToInt16(gi) > 11)
+                {
+                    dealerScore += 10;
+
+                }
+                label10.Text = Convert.ToString(dealerScore);
+                client.Send("ds" + label10.Text);
+
+
+            }
+        }
+        private void Start_Click(object sender, EventArgs e)
+        { 
+            
+                
+                deal();
+            
+
+        }
+
+
+
+
+
+        int testul = 0;
+
+
         private void button4_Click(object sender, EventArgs e)
         {
-            
-            if (test == 0)
+
+            if (testul == 0)
             {
                 player1.setCArd(random1.Next(2, 14));
                 int card0 = player1.getCard();
@@ -557,65 +996,16 @@ namespace AdvancedClient
                 Random rand = new Random();
                 Card card;
                 String s;
-                int nr = rand.Next(1, 4);
-                if (nr == 1)
+                if (card0 <= 11)
                 {
-                    CardFactory cardfact = new CardFactory();
-                    Shape.card sh = Shape.card.SPADES;
-                    Image imge1 = cardfact.getShape(sh).draw(card0);
-                    pictureBox3.Image = imge1;
-                    s = "spades";
-                    client.Send("$#" + g + "/" + s);
-
+                    scorePlyer1 += card0;
                 }
-                else if (nr == 2)
+                else if (card0 > 11)
                 {
-                    CardFactory cardfact1 = new CardFactory();
-                    Shape.card sh = Shape.card.HEART;
-                    s = cardfact1.getSh();
-                    Image imge1 = cardfact1.getShape(sh).draw(card0);
-                    pictureBox3.Image = imge1;
-                    s = "heart";
-                    client.Send("$#" + g + "/" + s);
-
+                    scorePlyer1 += 10;
                 }
-                else if (nr == 3)
-                {
-                    CardFactory cardfact2 = new CardFactory();
-                    Shape.card sh = Shape.card.DIAMONDS;
-                    s = cardfact2.getSh();
-                    Image imge1 = cardfact2.getShape(sh).draw(card0);
-                    pictureBox3.Image = imge1;
-                    s = "diamonds";
-                    client.Send("$#" + g + "/" + s);
-
-
-                }
-                else if (nr == 4)
-                {
-                    CardFactory cardfact3 = new CardFactory();
-                    Shape.card sh = Shape.card.CLUBS;
-                    s = cardfact3.getSh();
-                    Image imge1 = cardfact3.getShape(sh).draw(card0);
-                    pictureBox3.Image = imge1;
-                    s = "clubs";
-                    client.Send("$#" + g + "/" + s);
-
-
-                }
-
-
-                test++;
-            } 
-            else if (test == 1)
-            {
-                player1.setCArd(random1.Next(2, 14));
-                int card0 = player1.getCard();
-                String g = Convert.ToString(card0);
-                Shape shape1 = new Shape();
-                Random rand = new Random();
-                Card card;
-                String s;
+                label8.Text = Convert.ToString(scorePlyer1);
+                client.Send("*s" + Convert.ToString(scorePlyer1));
                 int nr = rand.Next(1, 4);
                 if (nr == 1)
                 {
@@ -631,7 +1021,7 @@ namespace AdvancedClient
                 {
                     CardFactory cardfact1 = new CardFactory();
                     Shape.card sh = Shape.card.HEART;
-                    s = cardfact1.getSh();
+
                     Image imge1 = cardfact1.getShape(sh).draw(card0);
                     pictureBox4.Image = imge1;
                     s = "heart";
@@ -642,7 +1032,7 @@ namespace AdvancedClient
                 {
                     CardFactory cardfact2 = new CardFactory();
                     Shape.card sh = Shape.card.DIAMONDS;
-                    s = cardfact2.getSh();
+
                     Image imge1 = cardfact2.getShape(sh).draw(card0);
                     pictureBox4.Image = imge1;
                     s = "diamonds";
@@ -654,7 +1044,7 @@ namespace AdvancedClient
                 {
                     CardFactory cardfact3 = new CardFactory();
                     Shape.card sh = Shape.card.CLUBS;
-                    s = cardfact3.getSh();
+
                     Image imge1 = cardfact3.getShape(sh).draw(card0);
                     pictureBox4.Image = imge1;
                     s = "clubs";
@@ -663,11 +1053,11 @@ namespace AdvancedClient
 
                 }
 
-                test++;
+                testul=1;
 
 
             }
-            else if (test == 2)
+            else if (testul == 1)
             {
                 player1.setCArd(random1.Next(2, 14));
                 int card0 = player1.getCard();
@@ -676,6 +1066,16 @@ namespace AdvancedClient
                 Random rand = new Random();
                 Card card;
                 String s;
+                if (card0 <= 11)
+                {
+                    scorePlyer1 += card0;
+                }
+                else if (card0 > 11)
+                {
+                    scorePlyer1 += 10;
+                }
+                label8.Text = Convert.ToString(scorePlyer1);
+                client.Send("*s" + Convert.ToString(scorePlyer1));
                 int nr = rand.Next(1, 4);
                 if (nr == 1)
                 {
@@ -691,7 +1091,6 @@ namespace AdvancedClient
                 {
                     CardFactory cardfact1 = new CardFactory();
                     Shape.card sh = Shape.card.HEART;
-                    s = cardfact1.getSh();
                     Image imge1 = cardfact1.getShape(sh).draw(card0);
                     pictureBox5.Image = imge1;
                     s = "heart";
@@ -702,7 +1101,6 @@ namespace AdvancedClient
                 {
                     CardFactory cardfact2 = new CardFactory();
                     Shape.card sh = Shape.card.DIAMONDS;
-                    s = cardfact2.getSh();
                     Image imge1 = cardfact2.getShape(sh).draw(card0);
                     pictureBox5.Image = imge1;
                     s = "diamonds";
@@ -714,27 +1112,217 @@ namespace AdvancedClient
                 {
                     CardFactory cardfact3 = new CardFactory();
                     Shape.card sh = Shape.card.CLUBS;
-                    s = cardfact3.getSh();
                     Image imge1 = cardfact3.getShape(sh).draw(card0);
                     pictureBox5.Image = imge1;
                     s = "clubs";
                     client.Send("@#" + g + "/" + s);
 
 
+
+
                 }
+
+
             }
+           // gameWiner();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            if (get1 == "1")
+
+
+            if (Convert.ToInt16(label8.Text) < 21 || Convert.ToInt16(label9.Text)<21)
+                {
+                    if (pictureBox11.Image.Tag == "checked")
+                    {
+                        pictureBox11.Image.Tag = "unchecked";
+                        deal1 = dealer.generateCard(client, "d1#");
+                        String g1 = dealer.getCardNumber();
+                        int card0 = Convert.ToInt32(g1);
+                        if (card0 <= 11)
+                        {
+                            dealerScore += card0;
+                        }
+                        else if (card0 > 11)
+                        {
+                            dealerScore += 10;
+                        }
+
+                        String txt1 = dealer.getShape();
+                       
+                        pictureBox11.Image = deal1;
+                    }
+                    if (pictureBox12.Image.Tag == "checked")
+                    {
+                        pictureBox12.Image.Tag = "unchacked";
+                        deal2 = dealer.generateCard(client, "d2#");
+                        String g2 = dealer.getCardNumber();
+                        String txt2 = dealer.getShape();
+                        int card1 = Convert.ToInt32(g2);
+                        if (card1 <= 11)
+                        {
+                            dealerScore += card1;
+                        }
+                        else if (card1 > 11)
+                        {
+                            dealerScore += 10;
+                        }
+                        
+                        pictureBox12.Image = deal2;
+
+                    }
+                    if (pictureBox13.Image.Tag == "checked")
+                    {
+
+                        pictureBox13.Image.Tag = "unchecked";
+                    deal3 = dealer.generateCard(client, "d3#");
+                    String g3 = dealer.getCardNumber();
+                    String txt3 = dealer.getShape();
+                    int card2 = Convert.ToInt32(g3);
+                    if (card2 <= 11)
+                    {
+                        dealerScore += card2;
+                    }
+                    else if (card2 > 11)
+                    {
+                        dealerScore += 10;
+                    }
+                    //  client.Send("ds" + Convert.ToString(dealerScore));
+                    //    label10.Text = Convert.ToString(dealerScore);
+                    // client.Send("d#" + g3 + "/" + txt3);
+                    pictureBox13.Image = deal3;
+
+
+                    
+                    }
+                    label10.Text = Convert.ToString(dealerScore);
+                    client.Send("ds" + Convert.ToString(dealerScore));
+
+                }
+            gameWiner();
+            }
+
+        private void gameWiner()
+        {
+            SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+            synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Senior);
+            synthesizer.Volume = 100;  // 0...100
+            synthesizer.Rate = 1; 
+
+            if (scorePlyer1 > 21)
             {
+                label11.Text = "you lost";
+                client.Send("w#" +"your opponent lost");
+                synthesizer.Speak(label11.Text);
                 
             }
+            else if (scorePlayer2 > 21)
+            {
+                label11.Text = "your opponent lost";
+                client.Send("w#" + "you lost");
+                synthesizer.Speak(label11.Text);
+            }
+            else if (dealerScore > 21)
+            {
+                label11.Text = "dealer lost";
+                client.Send("w#" + label11.Text);
+                synthesizer.Speak(label11.Text);
+
+            }
+
+            else  if (scorePlyer1 == 21)
+            {
+                label11.Text = "Black Jack";
+                client.Send("w#" + label11.Text);
+                synthesizer.Speak(label11.Text);
+            }
+            else if (scorePlayer2 == 21)
+            {
+                label11.Text = "Black Jack";
+                client.Send("w#" + label11.Text);
+                synthesizer.Speak(label11.Text);
+            }
+            else if (dealerScore == 21)
+            {
+                label11.Text = "Black Jack";
+                client.Send("w#" + label11.Text);
+                synthesizer.Speak(label11.Text);
+            }
+            else if (dealerScore > 21 && scorePlayer2 < 21 && scorePlyer1 < 21)
+            {
+                label11.Text = " players win";
+                client.Send("w#" + label11.Text);
+                synthesizer.Speak(label11.Text);
+            }
+            else if (dealerScore > 21 && scorePlyer1 < 21)
+            {
+                label11.Text = "you win";
+                client.Send("w#" + "your opponent wins");
+                synthesizer.Speak(label11.Text);
+            }
+            else if (dealerScore > 21 && scorePlayer2 < 21)
+            {
+                label11.Text = "your opponent wins";
+                client.Send("w#" + "you win");
+                synthesizer.Speak(label11.Text);
+
+            }
+
+            reload();
         }
-           
-         
+        private void reload()
+        {
+            pictureBox2.Image = AdvancedClient.Properties.Resources.cardbg;
+            pictureBox3.Image = AdvancedClient.Properties.Resources.cardbg;
+            pictureBox4.Image = AdvancedClient.Properties.Resources.cardbg;
+            pictureBox5.Image = AdvancedClient.Properties.Resources.cardbg;
+            pictureBox6.Image = AdvancedClient.Properties.Resources.cardbg;
+            pictureBox7.Image = AdvancedClient.Properties.Resources.cardbg;
+            pictureBox8.Image = AdvancedClient.Properties.Resources.cardbg;
+            pictureBox9.Image = AdvancedClient.Properties.Resources.cardbg;
+            pictureBox10.Image = AdvancedClient.Properties.Resources.cardbg;
+            pictureBox11.Image = AdvancedClient.Properties.Resources.cardbg;
+            pictureBox12.Image = AdvancedClient.Properties.Resources.cardbg;
+            pictureBox13.Image = AdvancedClient.Properties.Resources.cardbg;
+            label10.Text = "0";
+            label9.Text = "0";
+            label8.Text = "0";
+            scorePlyer1 = 0;
+            scorePlayer2 = 0;
+            dealerScore = 0;
+            label11.Text = "new hand";
+            pictureBox10.Image.Tag = "checked";
+            pictureBox11.Image.Tag = "checked";
+            pictureBox12.Image.Tag = "checked";
+            pictureBox13.Image.Tag = "checked";
+
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Player player3 = new Player();
+            pictureBox3.Image = player3.generateCard(client, "$#");
+            String number1 = player3.getCardNumber();
+            String shape1 = player3.getShape();
+            if (Convert.ToInt32(number1) <= 11)
+            {
+                scorePlyer1 += Convert.ToInt32(number1);
+
+
+            }
+            else if (Convert.ToInt32(number1) > 11)
+            {
+                scorePlyer1 += 10;
+
+            }
+        }
+
+      
 
     }
-
 }
