@@ -217,6 +217,28 @@ namespace AdvanedServer
                     server.SendTo(player1, R.ReceivedData);
                 }
             }
+            else if (msg.StartsWith("m#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
+            else if (msg.StartsWith("r#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
                 else
                 {
 
