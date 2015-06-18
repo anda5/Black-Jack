@@ -16,7 +16,7 @@ namespace AdvanedServer
     public partial class Form1 : Form
     {
         Server server;
-        String player1, player2,msg;
+        String player1, player2,msg,player3,player4;
 
         public Form1()
         {
@@ -51,7 +51,10 @@ namespace AdvanedServer
                 }
                 else
                 {
-                    box.Items.Add(txt);
+                   
+                    
+                     box.Items.Add(txt);
+                    
                 }
             }
         }
@@ -78,9 +81,11 @@ namespace AdvanedServer
 
         private void server_OnClientDisconected(object Sender, DisconnectedArguments R)
         {
-            server.BroadCast(R.Name + "  has disconnected");
-            ChangeListBox(listBox1, R.Name, true);
-            ChangeListBox(listBox2, R.Ip, true);
+          
+                server.BroadCast(R.Name + "  has disconnected");
+                ChangeListBox(listBox1, R.Name, true);
+                ChangeListBox(listBox2, R.Ip, true);
+            
         }
 
         private void server_OnServerError(object Sender, ErrorArguments R)
@@ -89,12 +94,12 @@ namespace AdvanedServer
 
 
         }
-
+        String disc;
         private void server_OnRecived(object Sender, ReceivedArguments R)
         {
 
             msg = R.ReceivedData;
-
+         
             if (msg.StartsWith("#"))
             {
                 if (R.Name == player1)
@@ -230,13 +235,13 @@ namespace AdvanedServer
             }
             else if (msg.StartsWith("r#"))
             {
-                if (R.Name == player1)
+                if (R.Name == player3)
                 {
-                    server.SendTo(player2, R.ReceivedData);
+                    server.SendTo(player4, R.ReceivedData);
                 }
-                if (R.Name == player2)
+                if (R.Name == player4)
                 {
-                    server.SendTo(player1, R.ReceivedData);
+                    server.SendTo(player3, R.ReceivedData);
                 }
             }
                 else
@@ -257,9 +262,16 @@ namespace AdvanedServer
             server.BroadCast(R.Name + " has connected");
             ChangeListBox(listBox1, R.Name,false);
             ChangeListBox(listBox2, R.Ip, false);
+            try {
 
-            player1 = R.ListOfClients.First();
-            player2 = R.ListOfClients.Last();
+                player3 = R.ListOfClients.First();
+                player4 = R.ListOfClients.Last();
+            player1 = R.ListOfClients[2];
+            player2 = R.ListOfClients[1];
+                }
+            catch(Exception e){
+
+            }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)

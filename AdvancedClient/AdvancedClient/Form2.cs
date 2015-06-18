@@ -29,7 +29,7 @@ namespace AdvancedClient
         {
             if (textBox1.Text != "")
             {
-               
+
                 client = new Client();
                 client.ClientName = textBox1.Text;
                 client.ServerIp = "192.168.56.1";
@@ -38,9 +38,9 @@ namespace AdvancedClient
 
                 client.OnClientConnected += new OnClientConnectedDelegate(client_OnClientConnected);
                 client.OnClientConnecting += new OnClientConnectingDelegate(client_OnClientConnecting);
-              
+
                 client.OnDataReceived += new OnClientReceivedDelegate(client_OnClientRecivedDelegate);
-                client.Connect();
+                //client.Connect();
 
                 
                 this.Hide();

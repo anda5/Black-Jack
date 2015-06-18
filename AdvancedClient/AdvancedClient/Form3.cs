@@ -1,4 +1,5 @@
 ﻿using NetworksApi.TCP.CLIENT;
+using NetworksApi.TCP.SERVER;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,8 +23,10 @@ namespace AdvancedClient
             InitializeComponent();
             text = a;
             client=c;
+            client.ServerIp = "192.168.56.1";
+            client.ServerPort = "80";
             client.OnDataReceived += new OnClientReceivedDelegate(client_OnClientRecivedDelegate);
-            client.Connect();
+           client.Connect();
         }
         public void Change(string txt)
         {
@@ -51,17 +54,17 @@ namespace AdvancedClient
         {
 
                 listBox1.Items.Add(textBox1.Text);
-                client.Send("r#" + textBox1.Text);
+               client.Send("r#" + textBox1.Text);
             
             
         }
         String text;
-       
+        
         private void button2_Click(object sender, EventArgs e)
         {
             String room = (string)listBox1.SelectedItem;
             this.Hide();
-
+            client.Send("disconect");
             Form1 gameForm = new Form1(text);
             gameForm.ShowDialog();
             
