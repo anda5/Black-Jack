@@ -18,16 +18,11 @@ using System.Speech.Synthesis;
 
 namespace AdvancedClient
 {
-    public delegate void Update(string txt);
-    public delegate void ChangeLabel(string txt);
-    public delegate void ChangeLabel8(string txt);
-    public delegate void ChangeLabel11(string txt);
-    public delegate void ChangeTextBox(string txt);
-    public delegate void ChangeMoney(string txt);
-    public partial class Form1 : Form
+   
+    public partial class Form4 : Form
     {
         String clientName;
-        public Form1(String a)
+        public Form4(String a)
         {
             InitializeComponent();
             clientName = a;
@@ -85,7 +80,7 @@ namespace AdvancedClient
         int dealerScore = 0;
 
 
-      
+
         public void ChageTextBox(string txt)
         {
             if (textBox3.InvokeRequired)
@@ -100,21 +95,7 @@ namespace AdvancedClient
             }
         }
 
-        public void ChageLabel8(string txt)
-        {
-            if (label9.InvokeRequired)
-            {
-                Invoke(new Update(ChageLabel8), new object[] { txt });
-            }
-            else
-            {
-                String[] m = txt.Split('s');
-                player2mes = m[1];
-                label9.Text = player2mes;
-
-
-            }
-        }
+       
 
         public void ChageLabel(string txt)
         {
@@ -142,7 +123,7 @@ namespace AdvancedClient
                 SpeechSynthesizer synthesizer = new SpeechSynthesizer();
                 synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Senior);
                 synthesizer.Volume = 100;  // 0...100
-                synthesizer.Rate = 1; 
+                synthesizer.Rate = 1;
 
                 String[] m = txt.Split('#');
                 label11.Text = m[1];
@@ -159,12 +140,12 @@ namespace AdvancedClient
             }
             else
             {
-                
+
 
                 String[] m = txt.Split('#');
                 opponentMoney += Convert.ToInt16(m[1]);
                 label2.Text = Convert.ToString(yourMoney);
-                
+
             }
         }
         private void label1_Click(object sender, EventArgs e)
@@ -172,15 +153,7 @@ namespace AdvancedClient
 
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Client_Load(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -194,268 +167,16 @@ namespace AdvancedClient
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
+     
 
-        }
 
-       
-            //if (textBox1.Text != "" )
-            //{
-
-           
-            ////}
-            //else
-            //{
-            //    MessageBox.Show("Fill the textBox");
-            //}
-
-        
         String player2mes;
 
         private void client_OnClientRecivedDelegate(object Sender, ClientReceivedArguments R)
         {
 
             String mesaj = R.ReceivedData;
-            if (mesaj.StartsWith("money#"))
-            {
-                String[] text = mesaj.Split('#');
-                String mesaj2 = text[1];
-                try
-                {
-                    label2.Text = Convert.ToString(opponentMoney + Convert.ToInt16(mesaj2));
-                }
-                catch
-                {
-
-                }
-            }
-            if (mesaj.StartsWith("#"))
-            {
-                String[] text = mesaj.Split('/');
-                String mesaj1 = text[0];
-                String mesaj2 = text[1];
-                int cardNumber = CardNumber(mesaj1);
-                String cardShape = CardShape(mesaj2);
-                scorePlayer2 += cardNumber;
-
-                for (int i = 2; i <= 14; i++)
-                {
-                    if (cardNumber == i)
-                    {
-                        if (cardShape == "heart")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.HEART;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox6.Image = imge1;
-                        }
-
-                        else if (cardShape == "diamonds")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.DIAMONDS;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox6.Image = imge1;
-
-                        }
-                        else if (cardShape == "clubs")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.CLUBS;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox6.Image = imge1;
-
-
-                        }
-                        else if (cardShape == "spades")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.SPADES;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox6.Image = imge1;
-
-                        }
-                    }
-                }
-            }
-            if (mesaj.StartsWith("$#"))
-            {
-                String[] text = mesaj.Split('/');
-                String mesaj1 = text[0];
-                String mesaj2 = text[1];
-                int cardNumber = CardNumberOne(mesaj1);
-                String cardShape = CardShape(mesaj2);
-
-                for (int i = 2; i <= 14; i++)
-                {
-                    if (cardNumber == i)
-                    {
-                        if (cardShape == "heart")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.HEART;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox7.Image = imge1;
-                        }
-
-                        else if (cardShape == "diamonds")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.DIAMONDS;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox7.Image = imge1;
-
-                        }
-                        else if (cardShape == "clubs")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.CLUBS;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox7.Image = imge1;
-
-
-                        }
-                        else if (cardShape == "spades")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.SPADES;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox7.Image = imge1;
-
-                        }
-                    }
-                }
-            }
-            if (mesaj.StartsWith("!#"))
-            {
-                String[] text = mesaj.Split('/');
-                String mesaj1 = text[0];
-                String mesaj2 = text[1];
-                int cardNumber = CardNumberTwo(mesaj1);
-                String cardShape = CardShape(mesaj2);
-
-                for (int i = 2; i <= 14; i++)
-                {
-                    if (cardNumber == i)
-                    {
-                        if (cardShape == "heart")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.HEART;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox8.Image = imge1;
-                        }
-
-                        else if (cardShape == "diamonds")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.DIAMONDS;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox8.Image = imge1;
-
-                        }
-                        else if (cardShape == "clubs")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.CLUBS;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox8.Image = imge1;
-
-
-                        }
-                        else if (cardShape == "spades")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.SPADES;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox8.Image = imge1;
-
-                        }
-                    }
-                }
-            }
-            if (mesaj.StartsWith("@#"))
-            {
-                String[] text = mesaj.Split('/');
-                String mesaj1 = text[0];
-                String mesaj2 = text[1];
-                int cardNumber = CardNumberThree(mesaj1);
-                String cardShape = CardShape(mesaj2);
-
-                for (int i = 2; i <= 14; i++)
-                {
-                    if (cardNumber == i)
-                    {
-                        if (cardShape == "heart")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.HEART;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox9.Image = imge1;
-                        }
-
-                        else if (cardShape == "diamonds")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.DIAMONDS;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox9.Image = imge1;
-
-                        }
-                        else if (cardShape == "clubs")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.CLUBS;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox9.Image = imge1;
-
-
-                        }
-                        else if (cardShape == "spades")
-                        {
-                            player1.setCArd(i);
-                            int card = player1.getCard();
-                            CardFactory cardfact = new CardFactory();
-                            Shape.card sh = Shape.card.SPADES;
-                            Image imge1 = cardfact.getShape(sh).draw(card);
-                            pictureBox9.Image = imge1;
-
-                        }
-                    }
-                }
-            }
-           int test = 0;
+            int test = 0;
             if (mesaj.StartsWith("d#"))
             {
 
@@ -520,7 +241,7 @@ namespace AdvancedClient
 
                         }
                     }
-                   test++;
+                    test++;
                 }
 
             }
@@ -728,16 +449,11 @@ namespace AdvancedClient
             if (mesaj.StartsWith("w#"))
             {
                 ChageLabel11(R.ReceivedData);
-                
+
 
             }
 
-            if (mesaj.StartsWith("*s"))
-            {
-
-                ChageLabel8(R.ReceivedData);
-
-            }
+            
             if (mesaj.StartsWith("ds"))
             {
                 ChageLabel(R.ReceivedData);
@@ -929,7 +645,7 @@ namespace AdvancedClient
         {
 
         }
-       
+
         private void Start_Click(object sender, EventArgs e)
         {
 
@@ -1081,7 +797,7 @@ namespace AdvancedClient
 
                 }
 
-                testul=1;
+                testul = 1;
 
 
             }
@@ -1152,57 +868,57 @@ namespace AdvancedClient
 
 
             }
-           // gameWiner();
+            // gameWiner();
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
 
 
-            if (Convert.ToInt16(label8.Text) < 21 || Convert.ToInt16(label9.Text)<21)
+            if (Convert.ToInt16(label8.Text) < 21 )
+            {
+                if (pictureBox11.Image.Tag == "checked")
                 {
-                    if (pictureBox11.Image.Tag == "checked")
+                    pictureBox11.Image.Tag = "unchecked";
+                    deal1 = dealer.generateCard(client, "d1#");
+                    String g1 = dealer.getCardNumber();
+                    int card0 = Convert.ToInt32(g1);
+                    if (card0 <= 11)
                     {
-                        pictureBox11.Image.Tag = "unchecked";
-                        deal1 = dealer.generateCard(client, "d1#");
-                        String g1 = dealer.getCardNumber();
-                        int card0 = Convert.ToInt32(g1);
-                        if (card0 <= 11)
-                        {
-                            dealerScore += card0;
-                        }
-                        else if (card0 > 11)
-                        {
-                            dealerScore += 10;
-                        }
-
-                        String txt1 = dealer.getShape();
-                       
-                        pictureBox11.Image = deal1;
+                        dealerScore += card0;
                     }
-                    if (pictureBox12.Image.Tag == "checked")
+                    else if (card0 > 11)
                     {
-                        pictureBox12.Image.Tag = "unchacked";
-                        deal2 = dealer.generateCard(client, "d2#");
-                        String g2 = dealer.getCardNumber();
-                        String txt2 = dealer.getShape();
-                        int card1 = Convert.ToInt32(g2);
-                        if (card1 <= 11)
-                        {
-                            dealerScore += card1;
-                        }
-                        else if (card1 > 11)
-                        {
-                            dealerScore += 10;
-                        }
-                        
-                        pictureBox12.Image = deal2;
-
+                        dealerScore += 10;
                     }
-                    if (pictureBox13.Image.Tag == "checked")
-                    {
 
-                        pictureBox13.Image.Tag = "unchecked";
+                    String txt1 = dealer.getShape();
+
+                    pictureBox11.Image = deal1;
+                }
+                if (pictureBox12.Image.Tag == "checked")
+                {
+                    pictureBox12.Image.Tag = "unchacked";
+                    deal2 = dealer.generateCard(client, "d2#");
+                    String g2 = dealer.getCardNumber();
+                    String txt2 = dealer.getShape();
+                    int card1 = Convert.ToInt32(g2);
+                    if (card1 <= 11)
+                    {
+                        dealerScore += card1;
+                    }
+                    else if (card1 > 11)
+                    {
+                        dealerScore += 10;
+                    }
+
+                    pictureBox12.Image = deal2;
+
+                }
+                if (pictureBox13.Image.Tag == "checked")
+                {
+
+                    pictureBox13.Image.Tag = "unchecked";
                     deal3 = dealer.generateCard(client, "d3#");
                     String g3 = dealer.getCardNumber();
                     String txt3 = dealer.getShape();
@@ -1221,14 +937,14 @@ namespace AdvancedClient
                     pictureBox13.Image = deal3;
 
 
-                    
-                    }
-                    label10.Text = Convert.ToString(dealerScore);
-                    client.Send("ds" + Convert.ToString(dealerScore));
 
                 }
-            gameWiner();
+                label10.Text = Convert.ToString(dealerScore);
+                client.Send("ds" + Convert.ToString(dealerScore));
+
             }
+            gameWiner();
+        }
 
         private void gameWiner()
         {
@@ -1240,12 +956,12 @@ namespace AdvancedClient
             dealerMoney = 10000;
 
 
-              if (scorePlyer1 == 21)
+            if (scorePlyer1 == 21)
             {
                 label11.Text = "Black Jack";
-                client.Send("w#" + label11.Text);
+                
                 synthesizer.Speak(label11.Text);
-                yourMoney += dealerMoney * 3 / 2+opponentMoney;
+                yourMoney += dealerMoney * 3 / 2 + opponentMoney;
                 dealerMoney -= 2 * (dealerMoney * 3 / 2);
                 opponentMoney = 0;
 
@@ -1253,96 +969,94 @@ namespace AdvancedClient
             if (scorePlayer2 == 21)
             {
                 label11.Text = "Black Jack";
-                client.Send("w#" + label11.Text);
-                synthesizer.Speak(label11.Text);
                
-                opponentMoney += dealerMoney * 3 / 2 + yourMoney; 
+                synthesizer.Speak(label11.Text);
+
+                opponentMoney += dealerMoney * 3 / 2 + yourMoney;
                 dealerMoney -= 2 * (dealerMoney * 3 / 2);
                 yourMoney = 0;
             }
-             if (dealerScore == 21)
+            if (dealerScore == 21)
             {
                 label11.Text = "Black Jack";
-                client.Send("w#" + label11.Text);
-                synthesizer.Speak(label11.Text);
                
+                synthesizer.Speak(label11.Text);
+
                 dealerMoney += yourMoney + opponentMoney;
                 yourMoney = 0; ;
                 opponentMoney = 0;
             }
-              if (dealerScore > 21 && scorePlayer2 < 21 && scorePlyer1 < 21)
+            if (dealerScore > 21 && scorePlayer2 < 21 && scorePlyer1 < 21)
             {
                 label11.Text = " players win";
-                client.Send("w#" + label11.Text);
+              
                 synthesizer.Speak(label11.Text);
                 yourMoney += dealerMoney * 3 / 2;
                 opponentMoney += dealerMoney * 3 / 2;
                 dealerMoney -= 2 * (dealerMoney * 3 / 2);
             }
-             else if (dealerScore > 21 && scorePlyer1 < 21 && scorePlayer2 > 21)
+            else if (dealerScore > 21 && scorePlyer1 < 21 && scorePlayer2 > 21)
             {
                 label11.Text = "you win";
-                client.Send("w#" + "your opponent wins");
+              
                 synthesizer.Speak(label11.Text);
-                yourMoney += dealerMoney * 3 / 2+opponentMoney;
-                
+                yourMoney += dealerMoney * 3 / 2 + opponentMoney;
 
-
-                dealerMoney -=  (dealerMoney * 3 / 2);
+                dealerMoney -= (dealerMoney * 3 / 2);
                 opponentMoney = 0;
 
             }
-             else if (dealerScore > 21 && scorePlayer2 > 21 && scorePlayer2 < 21)
+            else if (dealerScore > 21 && scorePlayer2 > 21 && scorePlayer2 < 21)
             {
                 label11.Text = "your opponent wins";
-                client.Send("w#" + "you win");
+               
                 synthesizer.Speak(label11.Text);
-                
+
                 opponentMoney = dealerMoney * 3 / 2 + opponentMoney;
                 dealerMoney -= (dealerMoney * 3 / 2);
                 yourMoney = 0;
 
             }
-            else if (dealerScore < 21) {
+            else if (dealerScore < 21)
+            {
 
                 label11.Text = "dealer win";
-                client.Send("w#" + label11.Text);
+              
                 synthesizer.Speak(label11.Text);
                 dealerMoney += yourMoney + opponentMoney;
                 yourMoney = 0;
                 opponentMoney = 0;
-                
+
             }
 
-              else if (scorePlyer1 > 21)
-              {
-                  label11.Text = "you lost";
-                  client.Send("w#" + "your opponent lost");
-                  synthesizer.Speak(label11.Text);
-                  opponentMoney += yourMoney;
-                  yourMoney = 0;
+            else if (scorePlyer1 > 21)
+            {
+                label11.Text = "you lost";
+               
+                synthesizer.Speak(label11.Text);
+                opponentMoney += yourMoney;
+                yourMoney = 0;
 
-              }
-              else if (scorePlayer2 > 21)
-              {
-                  label11.Text = "your opponent lost";
-                  client.Send("w#" + "you lost");
-                  synthesizer.Speak(label11.Text);
-                  yourMoney += opponentMoney;
-                  opponentMoney = 0;
-              }
-              else if (dealerScore > 21)
-              {
-                  label11.Text = "dealer lost";
-                  client.Send("w#" + label11.Text);
-                  synthesizer.Speak(label11.Text);
-                  opponentMoney = dealerScore * 3 / 2;
-                  yourMoney = dealerMoney * 3 / 2;
-                  dealerMoney -= 2 * (dealerMoney * 3 / 2);
+            }
+            else if (scorePlayer2 > 21)
+            {
+                label11.Text = "your opponent lost";
+                client.Send("w#" + "you lost");
+                synthesizer.Speak(label11.Text);
+                yourMoney += opponentMoney;
+                opponentMoney = 0;
+            }
+            else if (dealerScore > 21)
+            {
+                label11.Text = "dealer lost";
+               
+                synthesizer.Speak(label11.Text);
+                opponentMoney = dealerScore * 3 / 2;
+                yourMoney = dealerMoney * 3 / 2;
+                dealerMoney -= 2 * (dealerMoney * 3 / 2);
 
-              }
-            label2.Text =Convert.ToString(yourMoney);
-            client.Send("money#" + Convert.ToString(opponentMoney));
+            }
+            label2.Text = Convert.ToString(yourMoney);
 
             reload();
         }
@@ -1352,16 +1066,13 @@ namespace AdvancedClient
             pictureBox3.Image = AdvancedClient.Properties.Resources.cardbg;
             pictureBox4.Image = AdvancedClient.Properties.Resources.cardbg;
             pictureBox5.Image = AdvancedClient.Properties.Resources.cardbg;
-            pictureBox6.Image = AdvancedClient.Properties.Resources.cardbg;
-            pictureBox7.Image = AdvancedClient.Properties.Resources.cardbg;
-            pictureBox8.Image = AdvancedClient.Properties.Resources.cardbg;
-            pictureBox9.Image = AdvancedClient.Properties.Resources.cardbg;
+           
             pictureBox10.Image = AdvancedClient.Properties.Resources.cardbg;
             pictureBox11.Image = AdvancedClient.Properties.Resources.cardbg;
             pictureBox12.Image = AdvancedClient.Properties.Resources.cardbg;
             pictureBox13.Image = AdvancedClient.Properties.Resources.cardbg;
             label10.Text = "0";
-            label9.Text = "0";
+            
             label8.Text = "0";
             scorePlyer1 = 0;
             scorePlayer2 = 0;
@@ -1401,7 +1112,7 @@ namespace AdvancedClient
         private void button7_Click(object sender, EventArgs e)
         {
             yourMoney += 5;
-            label2.Text =Convert.ToString(yourMoney);
+            label2.Text = Convert.ToString(yourMoney);
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -1411,7 +1122,7 @@ namespace AdvancedClient
             label2.Text = Convert.ToString(yourMoney);
 
         }
-        
+
         private void button11_Click(object sender, EventArgs e)
         {
             yourMoney += 100;
@@ -1427,7 +1138,7 @@ namespace AdvancedClient
 
         private void button9_Click(object sender, EventArgs e)
         {
-            yourMoney +=1000;
+            yourMoney += 1000;
             label2.Text = Convert.ToString(yourMoney);
         }
 
@@ -1443,27 +1154,8 @@ namespace AdvancedClient
             form3.ShowDialog();
         }
 
-        private void label2_Click_1(object sender, EventArgs e)
-        {
 
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-      
 
     }
 }
+
