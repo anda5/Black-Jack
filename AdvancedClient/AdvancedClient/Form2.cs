@@ -34,6 +34,7 @@ namespace AdvancedClient
 
                 client = new Client();
                 client.ClientName = textBox1.Text;
+                //schimb ip --
                 client.ServerIp = "192.168.56.1";
                 client.ServerPort = "80";
 

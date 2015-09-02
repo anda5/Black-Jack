@@ -79,6 +79,7 @@ namespace AdvanedServer
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //schiba ip --
             server = new Server("192.168.56.1", "80");
             server.OnClientConnected += new OnConnectedDelegate(server_OnClientConected);
             server.OnClientDisconnected += new OnDisconnectedDelegate(server_OnClientDisconected);
@@ -110,7 +111,17 @@ namespace AdvanedServer
         {
 
             msg = R.ReceivedData;
-
+            if (msg.StartsWith("opponent#"))
+            {
+                if (R.Name == player1)
+                {
+                    server.SendTo(player2, R.ReceivedData);
+                }
+                if (R.Name == player2)
+                {
+                    server.SendTo(player1, R.ReceivedData);
+                }
+            }
             if (msg.StartsWith("#"))
             {
                 if (R.Name == player1)

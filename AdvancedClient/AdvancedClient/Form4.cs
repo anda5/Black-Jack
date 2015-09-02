@@ -32,6 +32,7 @@ namespace AdvancedClient
             pictureBox13.Image.Tag = "checked";
             client = new Client();
             client.ClientName = clientName;
+            //schimb ip--
             client.ServerIp = "192.168.56.1";
             client.ServerPort = "80";
 
@@ -645,78 +646,85 @@ namespace AdvancedClient
         {
 
         }
-
+        int handNumer = 0;
         private void Start_Click(object sender, EventArgs e)
         {
-
-
-            SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-            synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Senior);
-            synthesizer.Volume = 100;  // 0...100
-            synthesizer.Rate = 1;     // -10...10
-
-            // Synchronous
-            synthesizer.Speak("Deal");
-
-            pictureBox2.Image = player1.generateCard(client, "#");
-            String number = player1.getCardNumber();
-            String shape = player1.getShape();
-            if (Convert.ToInt32(number) <= 11)
+            handNumer++;
+            label4.Text = handNumer.ToString();
+            if (handNumer<7)
             {
-                scorePlyer1 += Convert.ToInt16(number);
+                SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+                synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Senior);
+                synthesizer.Volume = 100;  // 0...100
+                synthesizer.Rate = 1;     // -10...10
 
+                // Synchronous
+                synthesizer.Speak("Deal");
 
-            }
-            else if (Convert.ToInt32(number) > 11)
-            {
-                scorePlyer1 += 10;
-
-
-            }
-
-
-
-            Player player3 = new Player();
-            pictureBox3.Image = player3.generateCard(client, "$#");
-            String number1 = player3.getCardNumber();
-            String shape1 = player3.getShape();
-            if (Convert.ToInt32(number1) <= 11)
-            {
-                scorePlyer1 += Convert.ToInt32(number1);
-
-
-            }
-            else if (Convert.ToInt32(number1) > 11)
-            {
-                scorePlyer1 += 10;
-
-            }
-
-
-            label8.Text = Convert.ToString(scorePlyer1);
-            client.Send("*s" + Convert.ToString(scorePlyer1));
-
-
-            if (pictureBox10.Image.Tag == "checked")
-            {
-                pictureBox10.Image.Tag = "unchecked";
-                pictureBox10.Image = dealer.generateCard(client, "d#");
-                gi = dealer.getCardNumber();
-                txt = dealer.getShape();
-                if (Convert.ToInt16(gi) <= 11)
+                pictureBox2.Image = player1.generateCard(client, "#");
+                String number = player1.getCardNumber();
+                String shape = player1.getShape();
+                if (Convert.ToInt32(number) <= 11)
                 {
-                    dealerScore += Convert.ToInt16(gi);
+                    scorePlyer1 += Convert.ToInt16(number);
+
 
                 }
-                else if (Convert.ToInt16(gi) > 11)
+                else if (Convert.ToInt32(number) > 11)
                 {
-                    dealerScore += 10;
+                    scorePlyer1 += 10;
+
 
                 }
-                label10.Text = Convert.ToString(dealerScore);
-                client.Send("ds" + label10.Text);
 
 
+
+                Player player3 = new Player();
+                pictureBox3.Image = player3.generateCard(client, "$#");
+                String number1 = player3.getCardNumber();
+                String shape1 = player3.getShape();
+                if (Convert.ToInt32(number1) <= 11)
+                {
+                    scorePlyer1 += Convert.ToInt32(number1);
+
+
+                }
+                else if (Convert.ToInt32(number1) > 11)
+                {
+                    scorePlyer1 += 10;
+
+                }
+
+
+                label8.Text = Convert.ToString(scorePlyer1);
+                client.Send("*s" + Convert.ToString(scorePlyer1));
+
+
+                if (pictureBox10.Image.Tag == "checked")
+                {
+                    pictureBox10.Image.Tag = "unchecked";
+                    pictureBox10.Image = dealer.generateCard(client, "d#");
+                    gi = dealer.getCardNumber();
+                    txt = dealer.getShape();
+                    if (Convert.ToInt16(gi) <= 11)
+                    {
+                        dealerScore += Convert.ToInt16(gi);
+
+                    }
+                    else if (Convert.ToInt16(gi) > 11)
+                    {
+                        dealerScore += 10;
+
+                    }
+                    label10.Text = Convert.ToString(dealerScore);
+                    client.Send("ds" + label10.Text);
+
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("End of game!" + "\n" + "Your score:" + yourMoney + "\n" + "Dealer score:" + dealerScore);
             }
 
         }
@@ -962,20 +970,11 @@ namespace AdvancedClient
                 
                 synthesizer.Speak(label11.Text);
                 yourMoney += dealerMoney * 3 / 2 + opponentMoney;
-                dealerMoney -= 2 * (dealerMoney * 3 / 2);
+                dealerMoney -=0;
                 opponentMoney = 0;
 
             }
-            if (scorePlayer2 == 21)
-            {
-                label11.Text = "Black Jack";
-               
-                synthesizer.Speak(label11.Text);
-
-                opponentMoney += dealerMoney * 3 / 2 + yourMoney;
-                dealerMoney -= 2 * (dealerMoney * 3 / 2);
-                yourMoney = 0;
-            }
+          
             if (dealerScore == 21)
             {
                 label11.Text = "Black Jack";
@@ -984,16 +983,23 @@ namespace AdvancedClient
 
                 dealerMoney += yourMoney + opponentMoney;
                 yourMoney = 0; ;
-                opponentMoney = 0;
+               
             }
-            if (dealerScore > 21 && scorePlayer2 < 21 && scorePlyer1 < 21)
+            if (dealerScore > 21  && scorePlyer1 < 21)
             {
                 label11.Text = " players win";
               
                 synthesizer.Speak(label11.Text);
                 yourMoney += dealerMoney * 3 / 2;
                 opponentMoney += dealerMoney * 3 / 2;
-                dealerMoney -= 2 * (dealerMoney * 3 / 2);
+                if (dealerScore > 0)
+                {
+                    dealerMoney -= 2 * (dealerMoney * 3 / 2);
+                }
+                else
+                {
+                    dealerMoney = 0;
+                }
             }
             else if (dealerScore > 21 && scorePlyer1 < 21 && scorePlayer2 > 21)
             {
@@ -1053,7 +1059,14 @@ namespace AdvancedClient
                 synthesizer.Speak(label11.Text);
                 opponentMoney = dealerScore * 3 / 2;
                 yourMoney = dealerMoney * 3 / 2;
-                dealerMoney -= 2 * (dealerMoney * 3 / 2);
+                if (dealerMoney > 0)
+                {
+                    dealerMoney -= 2 * (dealerMoney * 3 / 2);
+                }
+                else
+                {
+                    dealerMoney = 0;
+                }
 
             }
             label2.Text = Convert.ToString(yourMoney);
@@ -1152,6 +1165,21 @@ namespace AdvancedClient
             this.Hide();
             Form3 form3 = new Form3(clientName, client, null);
             form3.ShowDialog();
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            textBox3.Text = "";
         }
 
 
