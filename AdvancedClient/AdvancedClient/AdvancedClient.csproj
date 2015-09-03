@@ -86,6 +86,12 @@
     <Compile Include="Form3.Designer.cs">
       <DependentUpon>Form3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form4.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form4.Designer.cs">
+      <DependentUpon>Form4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="Hearts.cs" />
     <Compile Include="Player.cs" />
@@ -101,6 +107,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form4.resx">
+      <DependentUpon>Form4.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -546,6 +555,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\twentyfive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AdvanedServer\AdvanedServer\AdvanedServer.csproj">
+      <Project>{ff19f471-b3f3-4b26-97b7-cd62faeb6b4e}</Project>
+      <Name>AdvanedServer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blackjack1.png" />
+    <None Include="Resources\blackjack.png" />
+    <Content Include="Resources\shutterstock_25012345.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

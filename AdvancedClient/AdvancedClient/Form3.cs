@@ -1,4 +1,5 @@
 ﻿using NetworksApi.TCP.CLIENT;
+using NetworksApi.TCP.SERVER;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,16 +16,29 @@ namespace AdvancedClient
     
     public partial class Form3 : Form
     {
-        Client client;
+        Client client1;
+        String name;
+        String textul;
+      
        
-        public Form3(String a,Client c)
+        public Form3(String text,Client client,String text1)
         {
             InitializeComponent();
-            text = a;
-            client=c;
-            client.OnDataReceived += new OnClientReceivedDelegate(client_OnClientRecivedDelegate);
-            client.Connect();
+            name = text;
+            client1 = client;
+            textul = text1;
+
+            client1.OnClientConnected += new OnClientConnectedDelegate(client_OnClientConnected);
+            client1.OnDataReceived += new OnClientReceivedDelegate(client_OnClientRecivedDelegate);
+            
         }
+
+        private void client_OnClientConnected(object Sender, ClientConnectedArguments R)
+        {
+            //throw new NotImplementedException();
+        }
+
+     
         public void Change(string txt)
         {
             if (listBox1.InvokeRequired)
@@ -42,6 +56,8 @@ namespace AdvancedClient
             }
         }
 
+        
+
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -49,22 +65,31 @@ namespace AdvancedClient
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-
-                listBox1.Items.Add(textBox1.Text);
-                client.Send("r#" + textBox1.Text);
+                
+                client1.Send("r#" + textBox1.Text);
+                listBox1.Items.Add(textBox1.Text); 
+                
+              
+               
             
             
         }
-        String text;
-       
+      
+        
         private void button2_Click(object sender, EventArgs e)
         {
-            String room = (string)listBox1.SelectedItem;
-            this.Hide();
 
-            Form1 gameForm = new Form1(text);
-            gameForm.ShowDialog();
-            
+            if (listBox1.SelectedItem != null)
+            {
+                client1.Disconnect();
+                this.Hide();
+                Form1 gameForm = new Form1(name);
+                gameForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Please select a room!");
+            }
             
 
         }
@@ -74,14 +99,17 @@ namespace AdvancedClient
             String mesaj = R.ReceivedData;
             if (mesaj.StartsWith("r#"))
             {
-
                 Change(mesaj);
            
             }
         }
-        public String getText()
+
+        private void button3_Click(object sender, EventArgs e)
         {
-            return text;
+            this.Hide();
+            Form2 firstForm = new Form2();
+            firstForm.ShowDialog();
         }
+       
     }
 }

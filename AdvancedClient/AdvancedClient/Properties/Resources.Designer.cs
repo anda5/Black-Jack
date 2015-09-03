@@ -83,6 +83,16 @@ namespace AdvancedClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap blackjack {
+            get {
+                object obj = ResourceManager.GetObject("blackjack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap c {
             get {
                 object obj = ResourceManager.GetObject("c", resourceCulture);

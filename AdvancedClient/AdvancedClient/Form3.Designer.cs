@@ -57,7 +57,6 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(417, 225);
             this.listBox1.TabIndex = 7;
-           
             // 
             // button2
             // 
@@ -79,6 +78,7 @@
             this.button3.TabIndex = 10;
             this.button3.Text = "BECK";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // textBox1
             // 

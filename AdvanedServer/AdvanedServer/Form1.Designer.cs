@@ -131,7 +131,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(12, 25);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(136, 251);
+            this.listBox1.Size = new System.Drawing.Size(136, 238);
             this.listBox1.TabIndex = 3;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -140,7 +140,7 @@
             this.listBox2.FormattingEnabled = true;
             this.listBox2.Location = new System.Drawing.Point(155, 25);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(146, 251);
+            this.listBox2.Size = new System.Drawing.Size(146, 238);
             this.listBox2.TabIndex = 4;
             this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
             // 
