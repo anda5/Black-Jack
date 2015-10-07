@@ -1,2 +1,2 @@
 # Black-Jack
-This is a nice game
+This is an client-server game.
